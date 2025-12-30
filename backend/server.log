@@ -1,0 +1,528 @@
+INFO:     Will watch for changes in these directories: ['/Users/Apple/Desktop/PhD Test 2 copy/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [18383] using WatchFiles
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [18395]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:56822 - "GET /api/exercises/classes HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56830 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56833 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56837 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56832 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56834 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56835 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56842 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56843 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56839 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56845 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56831 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56847 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56849 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56851 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56853 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56855 - "GET /api/classes/1/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56857 - "GET /api/courses/1/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56859 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56867 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56875 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56871 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56870 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56872 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56873 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56879 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56878 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56882 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56883 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56869 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56885 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56887 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56889 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'fix_level_structure.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18395]
+WARNING:  WatchFiles detected changes in 'fix_level_structure.py'. Reloading...
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [20097]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:56900 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56903 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56907 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56902 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56904 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56905 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56909 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56911 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56914 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56915 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56901 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56917 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56919 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56921 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56926 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56928 - "GET /api/courses/1/levels HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'restore_original_structure.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [20097]
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [20850]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'fix_level_structure.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [20850]
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [20909]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:56943 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56946 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56947 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56950 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56945 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56948 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56952 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56954 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56957 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56958 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56944 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56960 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56964 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56966 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56968 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56976 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56983 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56980 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56979 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56978 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56981 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56990 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56988 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56991 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56989 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56977 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56993 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56995 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56997 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56999 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57001 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57011 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57013 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57016 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57018 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57020 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57022 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57024 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57026 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57028 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'seed_level1_exercises.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [20909]
+WARNING:  WatchFiles detected changes in 'seed_level1_exercises.py'. Reloading...
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [22426]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57034 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'seed_level1_exercises.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [22426]
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [23201]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57053 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57056 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57055 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57057 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57060 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57058 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57064 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57066 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57063 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57068 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57054 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57070 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57073 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57075 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57077 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57081 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57085 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57088 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57090 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57092 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57112 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57115 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57116 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57114 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57117 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57119 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57124 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57125 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57127 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57126 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57113 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57129 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57132 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57134 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57136 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57139 - "GET /api/audio-exercises/1?slow=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57142 - "POST /api/1/submit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57144 - "GET /api/audio-exercises/2?slow=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57147 - "POST /api/2/submit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57149 - "GET /api/audio-exercises/3?slow=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57152 - "POST /api/3/submit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57154 - "GET /api/audio-exercises/4?slow=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57157 - "POST /api/4/submit HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'distribute_exercises_across_levels.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [23201]
+WARNING:  WatchFiles detected changes in 'distribute_exercises_across_levels.py'. Reloading...
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [26533]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57161 - "GET /api/audio-exercises/5?slow=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57165 - "POST /api/5/submit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57167 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57169 - "GET /api/levels/49/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57177 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57179 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57180 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57184 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57181 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57182 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57187 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57188 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57190 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57192 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57178 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57194 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57196 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57198 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57200 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57202 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57204 - "GET /api/levels/60/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57212 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57219 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57215 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57214 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57217 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57216 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57226 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57224 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57225 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57227 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57213 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57229 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57239 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57242 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57246 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57241 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57243 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57244 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57248 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57250 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57252 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57254 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57240 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57256 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57258 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57260 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57262 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57264 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57278 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57285 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57281 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57280 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57283 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57282 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57287 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57289 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57291 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57293 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57279 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57295 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57297 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57299 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57301 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57304 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57306 - "GET /api/levels/60/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57308 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57310 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57313 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57315 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57317 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57321 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57327 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57329 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57336 - "GET /api/audio-exercises/1?slow=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57345 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57352 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57348 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57347 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57349 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57350 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57354 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57358 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57359 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57360 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57346 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57362 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57364 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'distribute_exercises_across_levels.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [26533]
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [28124]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57373 - "GET /api/levels/50/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57375 - "GET /api/levels/58/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57384 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57391 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57386 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57387 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57388 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57394 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57395 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57389 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57397 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57399 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57385 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57401 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57403 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57405 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57407 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57410 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57412 - "GET /api/levels/60/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57419 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57421 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57423 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57425 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57427 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57440 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57442 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57444 - "GET /api/levels/60/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57446 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57448 - "GET /api/levels/60/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57450 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57452 - "GET /api/levels/48/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57462 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57469 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57465 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57464 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57463 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57466 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57467 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57471 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57475 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57479 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57474 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57478 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57487 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57494 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57489 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57490 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57488 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57491 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57492 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57497 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57500 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57498 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57504 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57503 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'restore_original_state.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [28124]
+WARNING:  WatchFiles detected changes in 'restore_original_state.py'. Reloading...
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [31472]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57518 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57526 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57522 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57521 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57523 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57528 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57530 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57524 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57532 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57534 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57520 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57536 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57538 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57540 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57542 - "GET /api/levels/1/exercises HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'restore_original_state.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [31472]
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [32314]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57551 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57553 - "GET /api/classes/1/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57555 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57557 - "GET /api/levels/1/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57568 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57570 - "GET /api/levels/13/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57579 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57581 - "GET /api/levels/1/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57583 - "GET /api/audio-exercises/1?slow=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57586 - "POST /api/1/submit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57588 - "POST /api/1/submit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57590 - "POST /api/1/submit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57592 - "GET /api/audio-exercises/1?slow=true HTTP/1.1" 200 OK
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:198: RuntimeWarning: Couldn't find ffprobe or avprobe - defaulting to ffprobe, but may not work
+  warn("Couldn't find ffprobe or avprobe - defaulting to ffprobe, but may not work", RuntimeWarning)
+INFO:     127.0.0.1:57595 - "POST /api/albanian-pronunciation-check HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:57597 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57609 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57612 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57614 - "GET /api/levels/1/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57616 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57618 - "GET /api/levels/13/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57620 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57622 - "GET /api/levels/1/exercises HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'rename_courses_to_levels.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [32314]
+WARNING:  WatchFiles detected changes in 'rename_courses_to_levels.py'. Reloading...
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [33787]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57629 - "GET /api/classes/1/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57635 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57644 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57639 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57640 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57641 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57642 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57648 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57649 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57650 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57652 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57638 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57654 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'rename_courses_to_levels.py'. Reloading...
+INFO:     127.0.0.1:57656 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [33787]
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/Apple/Desktop/Projekti phd/Phd Test 2/2508/PhD Test 2 copy/backend/venv/lib/python3.9/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+  warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+INFO:     Started server process [34357]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57660 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57666 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57668 - "GET /api/levels/13/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57697 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57693 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57692 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57694 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57695 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57701 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57702 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57705 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57703 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57691 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57707 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57717 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57724 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57720 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57719 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57721 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57722 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57726 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57728 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57731 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57732 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57718 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57734 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57736 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57738 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57740 - "GET /api/levels/13/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57744 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57746 - "GET /api/levels/13/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57748 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57750 - "GET /api/levels/13/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57905 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57912 - "GET /api/classes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57908 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57907 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57909 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57910 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57915 - "GET /api/ai/adaptive-difficulty/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57916 - "GET /api/ai/recommendations/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57918 - "GET /api/ai/learning-path/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57921 - "GET /api/ai/progress-insights/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57906 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57922 - "GET /api/progress/2/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57924 - "GET /api/classes/1/courses?user_id=2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57926 - "GET /api/courses/9/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57928 - "GET /api/levels/1/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57930 - "GET /api/courses/10/levels HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57932 - "GET /api/levels/13/exercises HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57934 - "POST /api/6/submit HTTP/1.1" 200 OK
