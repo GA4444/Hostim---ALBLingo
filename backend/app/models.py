@@ -147,6 +147,9 @@ class User(Base):
 	username = Column(String(50), unique=True, index=True, nullable=False)
 	email = Column(String(100), unique=True, index=True, nullable=False)
 	age = Column(Integer, nullable=True)
+	date_of_birth = Column(DateTime, nullable=True)
+	address = Column(String(255), nullable=True)
+	phone_number = Column(String(20), nullable=True)
 	# grade_level = Column(String(20), nullable=True)  # e.g., "Class 1", "Class 2" - REMOVED
 	# learning_style = Column(String(50), nullable=True)  # e.g., "visual", "auditory", "kinesthetic" - REMOVED
 	# preferred_difficulty = Column(String(20), default="normal")  # "easy", "normal", "hard" - REMOVED

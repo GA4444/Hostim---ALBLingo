@@ -395,6 +395,9 @@ export interface UserOut {
 	username: string
 	email: string
 	age?: number | null
+	date_of_birth?: string | null
+	address?: string | null
+	phone_number?: string | null
 	created_at: string
 	last_login?: string | null
 	is_active: boolean
@@ -427,6 +430,24 @@ export async function getAllUsers(userId: number) {
 
 export async function getUser(userId: number, targetUserId: number) {
 	const { data } = await client.get<UserOut>(`/api/admin/users/${targetUserId}?user_id=${userId}`)
+	return data
+}
+
+export async function getUserProfile(userId: number) {
+	const { data } = await client.get<UserOut>(`/api/user/${userId}`)
+	return data
+}
+
+export interface UserProfileUpdate {
+	email?: string
+	age?: number
+	date_of_birth?: string
+	address?: string
+	phone_number?: string
+}
+
+export async function updateUserProfile(userId: number, profileUpdate: UserProfileUpdate) {
+	const { data } = await client.put<UserOut>(`/api/user/${userId}/profile`, profileUpdate)
 	return data
 }
 

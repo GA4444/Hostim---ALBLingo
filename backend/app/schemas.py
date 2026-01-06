@@ -172,10 +172,20 @@ class UserOut(BaseModel):
 	username: str
 	email: str
 	age: Optional[int]
+	date_of_birth: Optional[datetime] = None
+	address: Optional[str] = None
+	phone_number: Optional[str] = None
 	created_at: datetime
 	last_login: Optional[datetime]
 	is_active: bool
 	is_admin: bool
+
+class UserUpdate(BaseModel):
+	email: Optional[str] = None
+	age: Optional[int] = None
+	date_of_birth: Optional[datetime] = None
+	address: Optional[str] = None
+	phone_number: Optional[str] = None
 
 class UserLogin(BaseModel):
 	username: str

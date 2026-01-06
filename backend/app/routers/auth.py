@@ -84,6 +84,46 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
 	return user
 
 
+@router.put("/user/{user_id}/profile", response_model=schemas.UserOut)
+def update_user_profile(
+	user_id: int,
+	user_update: schemas.UserUpdate,
+	db: Session = Depends(get_db)
+):
+	user = db.query(models.User).filter(models.User.id == user_id).first()
+	if not user:
+		raise HTTPException(status_code=404, detail="User not found")
+	
+	# Update email if provided and not already taken
+	if user_update.email is not None:
+		existing_user = db.query(models.User).filter(
+			models.User.email == user_update.email,
+			models.User.id != user_id
+		).first()
+		if existing_user:
+			raise HTTPException(status_code=400, detail="Email already registered")
+		user.email = user_update.email
+	
+	# Update other fields
+	if user_update.age is not None:
+		if user_update.age < 5 or user_update.age > 18:
+			raise HTTPException(status_code=400, detail="Age must be between 5 and 18")
+		user.age = user_update.age
+	
+	if user_update.date_of_birth is not None:
+		user.date_of_birth = user_update.date_of_birth
+	
+	if user_update.address is not None:
+		user.address = user_update.address
+	
+	if user_update.phone_number is not None:
+		user.phone_number = user_update.phone_number
+	
+	db.commit()
+	db.refresh(user)
+	return user
+
+
 @router.put("/user/{user_id}/preferences")
 def update_user_preferences(
 	user_id: int, 
