@@ -1,6 +1,6 @@
 .admin-dashboard {
 	min-height: 100vh;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	background: var(--alb-gray-50);
 	padding: var(--space-6);
 }
 
@@ -8,22 +8,23 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background: white;
+	background: var(--alb-white);
 	padding: var(--space-6);
 	border-radius: var(--radius-xl);
 	margin-bottom: var(--space-6);
-	box-shadow: var(--shadow-xl);
+	box-shadow: var(--shadow-2);
+	border: 1px solid var(--alb-gray-200);
 }
 
 .admin-header h1 {
 	margin: 0;
-	color: #667eea;
+	color: var(--alb-primary);
 	font-size: var(--font-size-3xl);
 }
 
 .admin-logout-btn {
-	background: #ef4444;
-	color: white;
+	background: var(--color-error);
+	color: var(--alb-white);
 	border: none;
 	padding: var(--space-3) var(--space-6);
 	border-radius: var(--radius-lg);
@@ -33,18 +34,20 @@
 }
 
 .admin-logout-btn:hover {
-	background: #dc2626;
+	background: var(--alb-error-hover, #DC5553);
 	transform: translateY(-2px);
+	box-shadow: var(--shadow-md);
 }
 
 .admin-tabs {
 	display: flex;
 	gap: var(--space-2);
 	margin-bottom: var(--space-6);
-	background: white;
+	background: var(--alb-white);
 	padding: var(--space-2);
 	border-radius: var(--radius-xl);
-	box-shadow: var(--shadow-lg);
+	box-shadow: var(--shadow-2);
+	border: 1px solid var(--alb-gray-200);
 }
 
 .admin-tabs button {
@@ -56,20 +59,26 @@
 	font-weight: 600;
 	cursor: pointer;
 	transition: all var(--duration-300) ease;
-	color: var(--text-secondary);
+	color: var(--alb-gray-600);
+}
+
+.admin-tabs button:hover {
+	color: var(--alb-primary);
+	background: var(--alb-primary-light);
 }
 
 .admin-tabs button.active {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: white;
+	background: var(--alb-primary);
+	color: var(--alb-white);
 	box-shadow: var(--shadow-md);
 }
 
 .admin-content {
-	background: white;
+	background: var(--alb-white);
 	border-radius: var(--radius-xl);
 	padding: var(--space-6);
-	box-shadow: var(--shadow-xl);
+	box-shadow: var(--shadow-2);
+	border: 1px solid var(--alb-gray-200);
 	min-height: 500px;
 }
 
@@ -80,11 +89,18 @@
 }
 
 .stat-card {
-	background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+	background: var(--alb-primary-light);
 	padding: var(--space-6);
 	border-radius: var(--radius-xl);
 	text-align: center;
-	border: 2px solid rgba(102, 126, 234, 0.2);
+	border: 2px solid rgba(74, 159, 212, 0.25);
+	transition: all var(--duration-300) ease;
+}
+
+.stat-card:hover {
+	border-color: var(--alb-primary);
+	box-shadow: var(--shadow-md);
+	transform: translateY(-2px);
 }
 
 .stat-icon {
@@ -95,13 +111,13 @@
 .stat-value {
 	font-size: var(--font-size-4xl);
 	font-weight: 800;
-	color: #667eea;
+	color: var(--alb-primary);
 	margin-bottom: var(--space-2);
 }
 
 .stat-label {
 	font-size: var(--font-size-base);
-	color: var(--text-secondary);
+	color: var(--alb-gray-600);
 	font-weight: 600;
 }
 
@@ -122,19 +138,21 @@
 }
 
 .create-btn {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: white;
+	background: var(--alb-primary);
+	color: var(--alb-white);
 	border: none;
 	padding: var(--space-3) var(--space-6);
 	border-radius: var(--radius-lg);
 	font-weight: 600;
 	cursor: pointer;
 	transition: all var(--duration-300) ease;
+	box-shadow: var(--shadow-md);
 }
 
 .create-btn:hover {
+	background: var(--alb-primary-hover);
 	transform: translateY(-2px);
-	box-shadow: var(--shadow-md);
+	box-shadow: var(--shadow-lg);
 }
 
 .admin-table {
@@ -143,8 +161,8 @@
 }
 
 .admin-table th {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: white;
+	background: var(--alb-primary);
+	color: var(--alb-white);
 	padding: var(--space-4);
 	text-align: left;
 	font-weight: 600;
@@ -152,25 +170,28 @@
 
 .admin-table td {
 	padding: var(--space-4);
-	border-bottom: 1px solid var(--border-light);
+	border-bottom: 1px solid var(--alb-gray-200);
 }
 
 .admin-table tr:hover {
-	background: rgba(102, 126, 234, 0.05);
+	background: var(--alb-primary-light);
 }
 
 .admin-table button {
-	background: var(--bg-accent);
-	border: 1px solid var(--border-light);
+	background: var(--alb-white);
+	border: 1px solid var(--alb-gray-200);
 	padding: var(--space-2) var(--space-4);
 	border-radius: var(--radius-lg);
 	margin-right: var(--space-2);
 	cursor: pointer;
 	transition: all var(--duration-300) ease;
+	color: var(--alb-gray-600);
 }
 
 .admin-table button:hover {
-	background: var(--bg-secondary);
+	background: var(--alb-primary-light);
+	border-color: var(--alb-primary);
+	color: var(--alb-primary);
 	transform: translateY(-1px);
 }
 
@@ -188,17 +209,18 @@
 }
 
 .modal-content {
-	background: white;
+	background: var(--alb-white);
 	padding: var(--space-8);
 	border-radius: var(--radius-xl);
 	max-width: 500px;
 	width: 90%;
-	box-shadow: var(--shadow-xl);
+	box-shadow: var(--shadow-2xl);
+	border: 1px solid var(--alb-gray-200);
 }
 
 .modal-content h2 {
 	margin: 0 0 var(--space-6) 0;
-	color: var(--text-primary);
+	color: var(--alb-gray-800);
 }
 
 .modal-content input,
@@ -206,15 +228,37 @@
 .modal-content select {
 	width: 100%;
 	padding: var(--space-3);
-	border: 2px solid var(--border-light);
+	border: 2px solid var(--alb-gray-200);
 	border-radius: var(--radius-lg);
 	margin-bottom: var(--space-4);
 	font-size: var(--font-size-base);
+	transition: border-color var(--duration-200) ease;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-content select:focus {
+	outline: none;
+	border-color: var(--alb-primary);
 }
 
 .modal-content textarea {
 	min-height: 100px;
 	resize: vertical;
+}
+
+.modal-content label {
+	display: block;
+	margin-bottom: var(--space-2);
+	color: var(--alb-gray-800);
+	font-weight: 600;
+	font-size: var(--font-size-sm);
+}
+
+.modal-content label input[type="checkbox"] {
+	width: auto;
+	margin-right: var(--space-2);
+	margin-bottom: 0;
 }
 
 .modal-actions {
@@ -234,24 +278,32 @@
 }
 
 .modal-actions button[type="submit"] {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: white;
+	background: var(--alb-primary);
+	color: var(--alb-white);
+	box-shadow: var(--shadow-md);
+}
+
+.modal-actions button[type="submit"]:hover {
+	background: var(--alb-primary-hover);
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-lg);
 }
 
 .modal-actions button[type="button"] {
-	background: var(--bg-tertiary);
-	color: var(--text-secondary);
+	background: var(--alb-gray-100);
+	color: var(--alb-gray-600);
+	border: 1px solid var(--alb-gray-200);
 }
 
-.modal-actions button:hover {
+.modal-actions button[type="button"]:hover {
+	background: var(--alb-gray-200);
 	transform: translateY(-2px);
-	box-shadow: var(--shadow-md);
 }
 
 .admin-loading {
 	text-align: center;
 	padding: var(--space-12);
 	font-size: var(--font-size-xl);
-	color: var(--text-secondary);
+	color: var(--alb-gray-600);
 }
 

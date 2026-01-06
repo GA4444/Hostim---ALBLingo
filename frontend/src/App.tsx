@@ -1302,67 +1302,21 @@ function App() {
                     showPronunciationHint={showPronunciationHint}
                     setCurrentExerciseIndex={setCurrentExerciseIndex}
                     setMessage={setMessage}
+                    // AI Practice props
+                    aiExercises={aiExercises}
+                    aiResponses={aiResponses}
+                    aiFeedback={aiFeedback}
+                    aiLoading={aiLoading}
+                    aiError={aiError}
+                    aiMessage={aiMessage}
+                    handleGenerateAIPractice={handleGenerateAIPractice}
+                    handleAIResponseChange={handleAIResponseChange}
+                    handleAIExerciseCheck={handleAIExerciseCheck}
                 />
-
-                {selectedLevel && (
-                    <section className="ai-practice-section">
-                        <div className="ai-practice-header">
-                            <div>
-                                <h3>Ushtrime AI të personalizuara</h3>
-                                <p className="ai-practice-subtitle">
-                                    Merrni disa ushtrime shtesë të ndërtuara për vështirësitë që keni pasur.
-                                </p>
-                            </div>
-                            <button
-                                className="ai-practice-button primary"
-                                onClick={handleGenerateAIPractice}
-                                disabled={aiLoading}
-                            >
-                                {aiLoading ? 'Po gjeneroj...' : 'Gjenero ushtrime shtesë'}
-                            </button>
-                        </div>
-
-                        {aiError && <div className="ai-practice-error">{aiError}</div>}
-                        {aiMessage && <div className="ai-practice-note">{aiMessage}</div>}
-
-                        {aiExercises.length > 0 ? (
-                            <div className="ai-practice-list">
-                                {aiExercises.map(exercise => (
-                                    <div key={exercise.id} className="ai-practice-card">
-                                        <p className="ai-practice-prompt">{exercise.prompt}</p>
-                                        {exercise.hint && (
-                                            <p className="ai-practice-hint">{exercise.hint}</p>
-                                        )}
-                                        <input
-                                            type="text"
-                                            className="ai-practice-input"
-                                            placeholder="Shkruaj përgjigjen..."
-                                            value={aiResponses[exercise.id] || ''}
-                                            onChange={(e) => handleAIResponseChange(exercise.id, e.target.value)}
-                                        />
-                                        <button
-                                            className="ai-practice-check"
-                                            onClick={() => handleAIExerciseCheck(exercise)}
-                                        >
-                                            Kontrollo
-                                        </button>
-                                        {aiFeedback[exercise.id] && (
-                                            <p className="ai-practice-feedback">{aiFeedback[exercise.id]}</p>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="ai-practice-empty">
-                                Klikoni “Gjenero ushtrime shtesë” për të marrë ushtrime të përshtatura në bazë të gabimeve.
-                            </p>
-                        )}
-                    </section>
-                )}
 
                 {/* OCR only on the learning home page (no class/course/level selected) */}
                 {!selectedClass && !selectedCourse && !selectedLevel && (
-                    <section className="ocr-section">
+                    <section className="ocr-main-container">
                         <div className="ocr-header">
                             <div>
                                 <h3>Kontrolli i diktimeve me OCR</h3>
@@ -1370,9 +1324,16 @@ function App() {
                                     Ngarkoni një imazh me diktimin tuaj në shqip. Sistemi do të nxjerrë tekstin dhe do të analizojë gabimet e drejtshkrimit.
                                 </p>
                             </div>
-                            <button className="ocr-button" onClick={handleOCRSubmit} disabled={ocrLoading}>
-                                {ocrLoading ? 'Analizoj...' : 'Analizo imazhin'}
-                            </button>
+                            {ocrLoading ? (
+                                <div className="ocr-loading-header">
+                                    <div className="ocr-spinner-small"></div>
+                                    <span>Duke analizuar...</span>
+                                </div>
+                            ) : (
+                                <button className="ocr-button" onClick={handleOCRSubmit}>
+                                    Analizo imazhin
+                                </button>
+                            )}
                         </div>
 
                         <div className="ocr-form">
@@ -1391,49 +1352,128 @@ function App() {
                             </label>
                         </div>
 
+                        {ocrLoading && (
+                            <div className="ocr-loading-overlay">
+                                <div className="ocr-spinner"></div>
+                                <p>Duke procesuar imazhin dhe analizuar drejtshkrimin...</p>
+                            </div>
+                        )}
+
                         {ocrError && <div className="ocr-error">{ocrError}</div>}
 
                         {ocrResult && (
-                            <div className="ocr-result">
-                                <h4>Teksti i njohur nga imazhi</h4>
-                                {ocrResult.meta?.ocr_confidence_avg !== undefined && (
-                                    <p className="ocr-meta">
-                                        Besueshmëria OCR (mesatare): <strong>{Math.round(ocrResult.meta.ocr_confidence_avg)}%</strong> • Fjalë të nxjerra: <strong>{ocrResult.meta.tokens_extracted ?? '-'}</strong>
-                                    </p>
-                                )}
-                                <p className="ocr-text">{ocrResult.extracted_text || '---'}</p>
-                                {(ocrResult.issues?.length || ocrResult.errors.length) > 0 ? (
-                                    <div className="ocr-errors">
-                                        <h5>Gabime drejtshkrimore të identifikuara</h5>
-                                        <ul>
-                                            {(ocrResult.issues || ocrResult.errors).map((err: any) => (
-                                                <li key={`${err.position}-${err.token || err.recognized || ''}`}>
-                                                    {err.expected ? (
-                                                        <>Pozicioni {err.position}: prisni <strong>{err.expected}</strong>, shkruhet <strong>{err.recognized || err.token || 'pa tekst'}</strong></>
-                                                    ) : (
-                                                        <>
-                                                            <span className={`ocr-badge ${err.source === 'ocr' ? 'ocr-badge-ocr' : 'ocr-badge-orth'}`}>
-                                                                {err.source === 'ocr' ? 'OCR' : 'Drejtshkrim'}
-                                                            </span>{' '}
-                                                            Fjala <strong>{err.token || err.recognized}</strong>
-                                                            {err.ocr_confidence !== undefined && err.ocr_confidence !== null && err.ocr_confidence >= 0 ? <> (<span className="ocr-conf">OCR {Math.round(err.ocr_confidence)}%</span>)</> : null}
-                                                            {typeof err.likelihood === 'number' ? <> • <span className="ocr-like">Prob. {Math.round(err.likelihood * 100)}%</span></> : null}
-                                                            : {err.message || 'Dyshohet gabim drejtshkrimi.'}
-                                                            {err.suggestions?.length ? <> (Sugjerime: <strong>{err.suggestions.join(', ')}</strong>)</> : null}
-                                                        </>
-                                                    )}
-                                                </li>
-                                            ))}
-                                        </ul>
+                            <div className="ocr-result-container">
+                                {/* Stage 1: Raw OCR Output */}
+                                <div className="ocr-section ocr-extracted-section">
+                                    <div className="ocr-section-header">
+                                        <h4>📄 Teksti i nxjerrë nga OCR</h4>
+                                        <div className="ocr-meta-pills">
+                                            {ocrResult.meta?.ocr_confidence_avg !== undefined && (
+                                                <span className={`ocr-confidence-pill ${ocrResult.meta.ocr_confidence_avg > 80 ? 'high' : ocrResult.meta.ocr_confidence_avg > 50 ? 'medium' : 'low'}`}>
+                                                    Saktësia: {Math.round(ocrResult.meta.ocr_confidence_avg)}%
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
-                                ) : (
-                                    <p className="ocr-clean">Nuk u gjetën gabime. Drejtshkrim i pastër!</p>
+                                    <div className="ocr-text-box">
+                                        {ocrResult.extracted_text ? (
+                                            <p className="ocr-text">{ocrResult.extracted_text}</p>
+                                        ) : ocrResult.issues && ocrResult.issues.length > 0 ? (
+                                            <p className="ocr-text">
+                                                {ocrResult.issues.map((issue: any) => issue.token || issue.recognized).filter(Boolean).join(' ')}
+                                            </p>
+                                        ) : (
+                                            <p className="ocr-text-empty">Nuk u detektua asnjë tekst. Provo të bësh një foto më të qartë dhe me më shumë dritë.</p>
+                                        )}
+                                    </div>
+                                    
+                                    {/* Fjalët e detektuara (lista) */}
+                                    {ocrResult.issues && ocrResult.issues.length > 0 && (
+                                        <div className="ocr-tokens-list">
+                                            <span className="tokens-label">Fjalët e detektuara:</span>
+                                            {ocrResult.issues.map((issue: any, idx: number) => (
+                                                <span key={idx} className="ocr-token-chip">
+                                                    {issue.token || issue.recognized}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Stage 2: LLM-Refined Text (if available) */}
+                                {ocrResult.refined_text && (
+                                    <div className="ocr-section ocr-refined-section">
+                                        <div className="ocr-section-header">
+                                            <h4>🤖 Teksti i rafinuar nga AI</h4>
+                                            <div className="ocr-meta-pills">
+                                                {ocrResult.meta?.llm_model && (
+                                                    <span className="ocr-llm-pill">{ocrResult.meta.llm_model}</span>
+                                                )}
+                                                {ocrResult.meta?.llm_confidence !== undefined && (
+                                                    <span className={`ocr-confidence-pill ${ocrResult.meta.llm_confidence > 0.8 ? 'high' : ocrResult.meta.llm_confidence > 0.5 ? 'medium' : 'low'}`}>
+                                                        AI: {Math.round(ocrResult.meta.llm_confidence * 100)}%
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="ocr-text-box refined">
+                                            <p className="ocr-text">{ocrResult.refined_text}</p>
+                                        </div>
+                                        
+                                        {/* LLM Corrections */}
+                                        {ocrResult.llm_corrections && ocrResult.llm_corrections.length > 0 && (
+                                            <div className="llm-corrections">
+                                                <h5>Korrigjimet e bëra nga AI:</h5>
+                                                <ul>
+                                                    {ocrResult.llm_corrections.map((corr: any, idx: number) => (
+                                                        <li key={idx} className="llm-correction-item">
+                                                            <span className="correction-original">{corr.original}</span>
+                                                            <span className="correction-arrow">→</span>
+                                                            <span className="correction-fixed">{corr.corrected}</span>
+                                                            {corr.reason && <span className="correction-reason">({corr.reason})</span>}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
                                 )}
-                                {ocrResult.suggestions.length > 0 && (
-                                    <p className="ocr-suggestions">
-                                        Sugjerimet për përsëritje: {ocrResult.suggestions.join(', ')}
-                                    </p>
-                                )}
+
+                                {/* Stage 3: Orthography Analysis */}
+                                <div className="ocr-section ocr-analysis-section">
+                                    <h4>🔍 Analiza e Drejtshkrimit</h4>
+                                    {(ocrResult.issues?.length || ocrResult.errors?.length) > 0 ? (
+                                        <div className="ocr-errors-list">
+                                            <ul>
+                                                {(ocrResult.issues || ocrResult.errors).map((err: any, idx: number) => (
+                                                    <li key={idx} className="ocr-error-item">
+                                                        <div className="ocr-error-main">
+                                                            {err.expected ? (
+                                                                <>Pozicioni {err.position}: Fjala <strong>"{err.recognized || err.token}"</strong> duhet të shkruhet <strong>"{err.expected}"</strong></>
+                                                            ) : (
+                                                                <>
+                                                                    <span className={`ocr-type-tag ${err.source === 'ocr' ? 'type-ocr' : 'type-orth'}`}>
+                                                                        {err.source === 'ocr' ? 'OCR' : 'Drejtshkrim'}
+                                                                    </span>
+                                                                    Fjala <strong>"{err.token || err.recognized}"</strong>: {err.message}
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                        {err.suggestions?.length > 0 && (
+                                                            <div className="ocr-error-suggestions">
+                                                                Sugjerime: {err.suggestions.map((s: string, si: number) => <span key={si} className="sugg-tag">{s}</span>)}
+                                                            </div>
+                                                        )}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ) : (
+                                        <div className="ocr-clean-box">
+                                            <p>✅ Nuk u gjetën gabime në tekstin e detektuar. Drejtshkrim i pastër!</p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         )}
                     </section>
@@ -2013,19 +2053,19 @@ function MainContent({
     userId,
     aiRecommendations,
     adaptiveDifficulty,
-    learningPath,
-    progressInsights,
+    learningPath: _learningPath,
+    progressInsights: _progressInsights,
     aiCoach,
-    aiCoachLoading,
-    aiCoachError,
-    aiCoachLevel,
-    aiCoachLevelLoading,
-    aiCoachLevelError,
+    aiCoachLoading: _aiCoachLoading,
+    aiCoachError: _aiCoachError,
+    aiCoachLevel: _aiCoachLevel,
+    aiCoachLevelLoading: _aiCoachLevelLoading,
+    aiCoachLevelError: _aiCoachLevelError,
     showAIInsights,
     userAchievements,
     userStreak,
     dailyChallenge,
-    srsStats,
+    srsStats: _srsStats,
     showGamification,
     setShowGamification,
     onClassClick,
@@ -2044,7 +2084,17 @@ function MainContent({
     isRecording,
     showPronunciationHint,
     setCurrentExerciseIndex,
-    setMessage
+    setMessage,
+    // AI Practice props
+    aiExercises,
+    aiResponses,
+    aiFeedback,
+    aiLoading,
+    aiError,
+    aiMessage,
+    handleGenerateAIPractice,
+    handleAIResponseChange,
+    handleAIExerciseCheck
 }: {
     isLoading: boolean
     classes: ClassData[]
@@ -2093,25 +2143,37 @@ function MainContent({
     showPronunciationHint: () => void
     setCurrentExerciseIndex: React.Dispatch<React.SetStateAction<number>>
     setMessage: React.Dispatch<React.SetStateAction<string>>
+    // AI Practice types
+    aiExercises: AIPracticeExercise[]
+    aiResponses: Record<string, string>
+    aiFeedback: Record<string, string>
+    aiLoading: boolean
+    aiError: string | null
+    aiMessage: string | null
+    handleGenerateAIPractice: () => void
+    handleAIResponseChange: (exerciseId: string, value: string) => void
+    handleAIExerciseCheck: (exercise: AIPracticeExercise) => void
 }) {
+    // Suppress unused variable warnings for simplified layout
+    void _learningPath; void _progressInsights; void _aiCoachLoading; void _aiCoachError;
+    void _aiCoachLevel; void _aiCoachLevelLoading; void _aiCoachLevelError; void _srsStats;
+    
     return (
-        <div className="main-content">
-            {/* Sidebar with Classes and AI Insights */}
-            <aside className="sidebar">
+        <div className={`main-content ${selectedLevel ? 'with-ai-panel' : ''}`}>
+            {/* Compact Left Sidebar - Navigation Only */}
+            <aside className="sidebar sidebar-compact">
                 <div className="sidebar-section">
-                    <div className="sidebar-section-header">
-                        <h3>🏫 Klasat</h3>
-                        <span className="classes-count">{classes.length} klasa</span>
+                    <div className="sidebar-section-header compact">
+                        <h3>📚 Klasat</h3>
+                        <span className="classes-count-badge">{classes.length}</span>
                     </div>
-                    <div className="class-list-modern">
+                    <div className="class-list-compact">
                         {isLoading && classes.length === 0 ? (
-                            // Skeleton loading for classes
                             <>
-                                {[1, 2, 3, 4].map((i) => (
-                                    <div key={`skeleton-${i}`} className="skeleton-card">
-                                        <div className="skeleton skeleton-circle" style={{marginBottom: '12px'}}></div>
-                                        <div className="skeleton skeleton-title"></div>
-                                        <div className="skeleton skeleton-text short"></div>
+                                {[1, 2, 3].map((i) => (
+                                    <div key={`skeleton-${i}`} className="skeleton-item-compact">
+                                        <div className="skeleton" style={{width: '28px', height: '28px', borderRadius: '8px'}}></div>
+                                        <div className="skeleton" style={{flex: 1, height: '16px'}}></div>
                                     </div>
                                 ))}
                             </>
@@ -2121,310 +2183,99 @@ function MainContent({
                             return (
                                 <div
                                     key={classData.id}
-                                    className={`class-card-modern ${classData.unlocked ? 'unlocked' : 'locked'} ${isSelected ? 'selected' : ''}`}
+                                    className={`class-item-compact ${classData.unlocked ? 'unlocked' : 'locked'} ${isSelected ? 'selected' : ''}`}
                                     onClick={() => onClassClick(classData)}
                                 >
-                                    <div className="class-card-header-modern">
-                                        <div className="class-number-modern">#{classData.order_index}</div>
-                                        <div className="class-info-modern">
-                                            <span className="class-name-modern">{classData.name}</span>
-                                            {classData.unlocked && (
-                                                <span className="class-status-badge unlocked-badge-modern">✅ E hapur</span>
-                                            )}
-                                            {!classData.unlocked && (
-                                                <span className="class-status-badge locked-badge-modern">🔒 E mbyllur</span>
-                                            )}
-                                        </div>
+                                    <div className="class-item-left">
+                                        <span className={`class-num ${isSelected ? 'active' : ''}`}>
+                                            {classData.order_index}
+                                        </span>
+                                        <span className="class-label">{classData.name}</span>
                                     </div>
-                                    {classData.unlocked && (
-                                        <div className="class-progress-modern-wrapper">
-                                            <div className="class-progress-header-modern">
-                                                <span className="progress-text-modern">Progresi</span>
-                                                <span className="progress-percent-modern">{Math.round(progress)}%</span>
+                                    <div className="class-item-right">
+                                        {classData.unlocked ? (
+                                            <div className="progress-mini" title={`${Math.round(progress)}%`}>
+                                                <div className="progress-mini-fill" style={{ width: `${progress}%` }}></div>
                                             </div>
-                                            <div className="class-progress-bar-modern">
-                                                <div 
-                                                    className="class-progress-fill-modern" 
-                                                    style={{ width: `${progress}%` }}
-                                                ></div>
-                                            </div>
-                                        </div>
-                                    )}
-                                    {!classData.unlocked && (
-                                        <div className="class-locked-message-modern">
-                                            <span className="lock-icon">🔒</span>
-                                            <span>Klasa e mëparshme duhet të përfundojë me 80%</span>
-                                        </div>
-                                    )}
+                                        ) : (
+                                            <span className="lock-mini">🔒</span>
+                                        )}
+                                    </div>
                                 </div>
                             )
                         })}
                     </div>
                 </div>
 
-                {/* AI Insights Panel */}
-                {userId && (
-                    <div className="sidebar-section ai-insights-modern">
-                        <div className="ai-header-modern">
-                            <div className="ai-header-content">
-                                <h3>🤖 AI Insights</h3>
-                                <span className="ai-badge">Personalizuar</span>
-                            </div>
-                            <button
-                                className="ai-toggle-modern"
-                                onClick={onToggleAIInsights}
-                                aria-label="Toggle AI Insights"
-                            >
-                                {showAIInsights ? '▼' : '▶'}
+                {/* Compact AI Stats */}
+                {userId && aiRecommendations && (
+                    <div className="sidebar-section">
+                        <div className="sidebar-section-header compact">
+                            <h3>📊 AI Stats</h3>
+                            <button className="toggle-btn-compact" onClick={onToggleAIInsights}>
+                                {showAIInsights ? '−' : '+'}
                             </button>
                         </div>
-
                         {showAIInsights && (
-                            <div className="ai-content-modern">
-                                {aiRecommendations && (
-                                    <div className="ai-card-modern">
-                                        <div className="ai-card-header-modern">
-                                            <span className="ai-icon">💡</span>
-                                            <h4>Rekomandime</h4>
-                                        </div>
-                                        <p className="ai-message-modern">{aiRecommendations.message}</p>
-                                        <div className="ai-stats-modern">
-                                            <div className="ai-stat-item">
-                                                <span className="stat-label-ai">Saktësia</span>
-                                                <span className="stat-value-ai">{Math.round(aiRecommendations.accuracy * 100)}%</span>
-                                            </div>
-                                            <div className="ai-stat-item">
-                                                <span className="stat-label-ai">Vështirësia</span>
-                                                <span className="stat-value-ai">{aiRecommendations.difficulty}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {adaptiveDifficulty && (
-                                    <div className="ai-card-modern">
-                                        <div className="ai-card-header-modern">
-                                            <span className="ai-icon">⚡</span>
-                                            <h4>Vështirësia Adaptiv</h4>
-                                        </div>
-                                        <p className="ai-message-modern">{adaptiveDifficulty.message}</p>
-                                        <div className="ai-stats-modern">
-                                            <div className="ai-stat-item">
-                                                <span className="stat-label-ai">Multiplikatori</span>
-                                                <span className="stat-value-ai">{adaptiveDifficulty.multiplier}x</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {learningPath && (
-                                    <div className="ai-card-modern">
-                                        <div className="ai-card-header-modern">
-                                            <span className="ai-icon">🛤️</span>
-                                            <h4>Rruga e Mësimit</h4>
-                                        </div>
-                                        <p className="ai-message-modern">{learningPath.message}</p>
-                                        <div className="ai-stats-modern">
-                                            <div className="ai-stat-item">
-                                                <span className="stat-label-ai">Tipi</span>
-                                                <span className="stat-value-ai">{learningPath.path}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {progressInsights && (
-                                    <div className="ai-card-modern">
-                                        <div className="ai-card-header-modern">
-                                            <span className="ai-icon">📈</span>
-                                            <h4>Njohuri</h4>
-                                        </div>
-                                        <div className="insights-list-modern">
-                                            {progressInsights.insights?.slice(0, 3).map((insight: string, index: number) => (
-                                                <div key={index} className="insight-item-modern">
-                                                    <span className="insight-bullet">💭</span>
-                                                    <span>{insight}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-
-                                <div className="ai-card-modern">
-                                    <div className="ai-card-header-modern">
-                                        <span className="ai-icon">🧠</span>
-                                        <h4>AI Coach (Drejtshkrim)</h4>
-                                    </div>
-                                    {aiCoachLoading && <p className="ai-message-modern">Po analizoj gabimet...</p>}
-                                    {aiCoachError && <p className="ai-message-modern">{aiCoachError}</p>}
-                                    {selectedLevel && (
-                                        <>
-                                            <p className="ai-message-modern">
-                                                <strong>Fokus: Niveli {selectedLevel.order_index}</strong>
-                                            </p>
-                                            {aiCoachLevelLoading && <p className="ai-message-modern">Po analizoj gabimet e nivelit...</p>}
-                                            {aiCoachLevelError && <p className="ai-message-modern">{aiCoachLevelError}</p>}
-                                            {aiCoachLevel && (
-                                                <>
-                                                    <div className="insights-list-modern">
-                                                        {aiCoachLevel.patterns.slice(0, 3).map((p: any) => (
-                                                            <div key={`lvl-${p.type}`} className="insight-item-modern">
-                                                                <span className="insight-bullet">•</span>
-                                                                <span><strong>{p.type}</strong>: {p.count}</span>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </>
-                                            )}
-                                            <hr style={{ border: 'none', borderTop: '1px solid rgba(15, 23, 42, 0.08)', margin: '10px 0' }} />
-                                        </>
-                                    )}
-
-                                    {aiCoach && (
-                                        <>
-                                            <p className="ai-message-modern">
-                                                Analizoi {aiCoach.total_attempts_analyzed} tentativa ({aiCoach.incorrect_attempts_analyzed} gabim).
-                                            </p>
-                                            <div className="insights-list-modern">
-                                                {aiCoach.patterns.slice(0, 4).map((p: any) => (
-                                                    <div key={p.type} className="insight-item-modern">
-                                                        <span className="insight-bullet">•</span>
-                                                        <span><strong>{p.type}</strong>: {p.count}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className="insights-list-modern">
-                                                {aiCoach.micro_lessons.slice(0, 2).map((t: string, i: number) => (
-                                                    <div key={i} className="insight-item-modern">
-                                                        <span className="insight-bullet">📌</span>
-                                                        <span>{t}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className="insights-list-modern">
-                                                {aiCoach.drill_plan.slice(0, 2).map((t: string, i: number) => (
-                                                    <div key={i} className="insight-item-modern">
-                                                        <span className="insight-bullet">✅</span>
-                                                        <span>{t}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </>
-                                    )}
+                            <div className="ai-stats-compact">
+                                <div className="stat-row-compact">
+                                    <span className="stat-label-compact">Saktësia</span>
+                                    <span className="stat-value-compact">{Math.round(aiRecommendations.accuracy * 100)}%</span>
                                 </div>
+                                {adaptiveDifficulty && (
+                                    <div className="stat-row-compact">
+                                        <span className="stat-label-compact">Nivel</span>
+                                        <span className="stat-value-compact">{adaptiveDifficulty.multiplier}x</span>
+                                    </div>
+                                )}
+                                {aiCoach && (
+                                    <div className="stat-row-compact">
+                                        <span className="stat-label-compact">Tentativa</span>
+                                        <span className="stat-value-compact">{aiCoach.total_attempts_analyzed}</span>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
                 )}
 
-                {/* Gamification Panel */}
-                {userId && (userStreak || dailyChallenge || userAchievements || srsStats) && (
-                    <div className="sidebar-section gamification-modern">
-                        <div className="gamification-header-modern">
-                            <div className="gamification-header-content">
-                                <h3>🏆 Arritjet</h3>
-                                <span className="gamification-badge">Gamifikimi</span>
-                            </div>
-                            <button
-                                className="gamification-toggle-modern"
-                                onClick={() => setShowGamification(!showGamification)}
-                                aria-label="Toggle Gamification"
-                            >
-                                {showGamification ? '▼' : '▶'}
+                {/* Compact Gamification */}
+                {userId && userStreak && (
+                    <div className="sidebar-section">
+                        <div className="sidebar-section-header compact">
+                            <h3>🏆 Progresi</h3>
+                            <button className="toggle-btn-compact" onClick={() => setShowGamification(!showGamification)}>
+                                {showGamification ? '−' : '+'}
                             </button>
                         </div>
-
-                        {showGamification && (
-                            <div className="gamification-content-modern">
-                                {/* Streak */}
-                                {userStreak && (
-                                    <div className="gamification-card-modern">
-                                        <div className="gamification-card-header-modern">
-                                            <span className="gamification-icon">🔥</span>
-                                            <h4>Streak</h4>
-                                        </div>
-                                        <div className="streak-display">
-                                            <div className="streak-current">
-                                                <span className="streak-number">{userStreak.current_streak}</span>
-                                                <span className="streak-label">ditë aktualisht</span>
-                                            </div>
-                                            <div className="streak-best">
-                                                Më e mira: {userStreak.longest_streak} ditë
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Daily Challenge */}
-                                {dailyChallenge && (
-                                    <div className="gamification-card-modern">
-                                        <div className="gamification-card-header-modern">
-                                            <span className="gamification-icon">🎯</span>
-                                            <h4>Sfida Ditore</h4>
-                                        </div>
-                                        <p className="challenge-description">{dailyChallenge.description}</p>
-                                        {dailyChallenge.user_progress && (
-                                            <div className="challenge-progress">
-                                                <div className="progress-bar">
-                                                    <div 
-                                                        className="progress-fill"
-                                                        style={{
-                                                            width: `${Math.min(100, (dailyChallenge.user_progress.current_value / (dailyChallenge.target_value || 1)) * 100)}%`
-                                                        }}
-                                                    ></div>
-                                                </div>
-                                                <div className="progress-text">
-                                                    {dailyChallenge.user_progress.current_value} / {dailyChallenge.target_value}
-                                                    {dailyChallenge.user_progress.completed && <span className="completed-badge">✅ Përfunduar</span>}
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-
-                                {/* Achievements */}
-                                {userAchievements && userAchievements.total_achievements > 0 && (
-                                    <div className="gamification-card-modern">
-                                        <div className="gamification-card-header-modern">
-                                            <span className="gamification-icon">🏅</span>
-                                            <h4>Arritjet e Fituara</h4>
-                                        </div>
-                                        <div className="achievements-count">{userAchievements.total_achievements} arritje</div>
-                                        <div className="achievements-list">
-                                            {userAchievements.achievements.slice(0, 3).map((achievement) => (
-                                                <div key={achievement.id} className="achievement-item">
-                                                    <span className="achievement-icon">{achievement.icon}</span>
-                                                    <div className="achievement-info">
-                                                        <div className="achievement-name">{achievement.name}</div>
-                                                        <div className="achievement-desc">{achievement.description}</div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* SRS Stats */}
-                                {srsStats && srsStats.total_cards > 0 && (
-                                    <div className="gamification-card-modern">
-                                        <div className="gamification-card-header-modern">
-                                            <span className="gamification-icon">📇</span>
-                                            <h4>Përsëritje me Hapsirë</h4>
-                                        </div>
-                                        <div className="srs-stats">
-                                            <div className="srs-stat">
-                                                <span className="srs-value">{srsStats.due_cards}</span>
-                                                <span className="srs-label">Karta për sot</span>
-                                            </div>
-                                            <div className="srs-stat">
-                                                <span className="srs-value">{Math.round(srsStats.accuracy)}%</span>
-                                                <span className="srs-label">Saktësi SRS</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
+                        <div className="gamification-compact">
+                            <div className="streak-compact">
+                                <span className="streak-fire">🔥</span>
+                                <span className="streak-num">{userStreak.current_streak}</span>
+                                <span className="streak-txt">ditë</span>
                             </div>
-                        )}
+                            {showGamification && (
+                                <>
+                                    {dailyChallenge && dailyChallenge.user_progress && (
+                                        <div className="challenge-compact">
+                                            <div className="challenge-label">🎯 Sfida</div>
+                                            <div className="challenge-bar-compact">
+                                                <div 
+                                                    className="challenge-fill-compact"
+                                                    style={{ width: `${Math.min(100, (dailyChallenge.user_progress.current_value / (dailyChallenge.target_value || 1)) * 100)}%` }}
+                                                ></div>
+                                            </div>
+                                            <span className="challenge-count">{dailyChallenge.user_progress.current_value}/{dailyChallenge.target_value}</span>
+                                        </div>
+                                    )}
+                                    {userAchievements && userAchievements.total_achievements > 0 && (
+                                        <div className="achievements-compact">
+                                            <span>🏅 {userAchievements.total_achievements} arritje</span>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                        </div>
                     </div>
                 )}
             </aside>
@@ -2926,6 +2777,66 @@ function MainContent({
                                     )}
                                 </div>
                             </div>
+                        </div>
+                        
+                        {/* AI Practice Section - Integrated Below Exercise */}
+                        <div className="ai-practice-integrated">
+                        <div className="ai-practice-header-integrated">
+                            <div className="ai-header-left">
+                                <span className="ai-icon-integrated">🤖</span>
+                                <div>
+                                    <h4>Ushtrime Shtesë AI</h4>
+                                    <span className="ai-subtitle">Personalizuar për ty</span>
+                                </div>
+                            </div>
+                            <button
+                                className="ai-generate-btn-integrated"
+                                onClick={handleGenerateAIPractice}
+                                disabled={aiLoading}
+                            >
+                                {aiLoading ? 'Po gjeneroj...' : '✨ Gjenero'}
+                            </button>
+                        </div>
+
+                        {aiError && <div className="ai-error-integrated">{aiError}</div>}
+                        {aiMessage && <div className="ai-note-integrated">{aiMessage}</div>}
+
+                        {aiExercises.length > 0 && (
+                            <div className="ai-exercises-integrated">
+                                {aiExercises.map((exercise, idx) => (
+                                    <div key={exercise.id} className="ai-exercise-item">
+                                        <div className="ai-exercise-header">
+                                            <span className="ai-exercise-num">#{idx + 1}</span>
+                                            <span className="ai-exercise-type">AI</span>
+                                        </div>
+                                        <p className="ai-exercise-question">{exercise.prompt}</p>
+                                        {exercise.hint && (
+                                            <p className="ai-hint-text">💡 {exercise.hint}</p>
+                                        )}
+                                        <div className="ai-exercise-answer">
+                                            <input
+                                                type="text"
+                                                placeholder="Shkruaj përgjigjen..."
+                                                value={aiResponses[exercise.id] || ''}
+                                                onChange={(e) => handleAIResponseChange(exercise.id, e.target.value)}
+                                            />
+                                            <button onClick={() => handleAIExerciseCheck(exercise)}>
+                                                Kontrollo
+                                            </button>
+                                        </div>
+                                        {aiFeedback[exercise.id] && (
+                                            <div className={`ai-feedback ${aiFeedback[exercise.id].includes('✅') ? 'correct' : 'wrong'}`}>
+                                                {aiFeedback[exercise.id]}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {aiExercises.length === 0 && !aiLoading && (
+                            <p className="ai-empty-text">Kliko "Gjenero" për ushtrime të reja bazuar në gabimet e tua.</p>
+                        )}
                         </div>
                     </div>
                 ) : null}

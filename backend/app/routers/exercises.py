@@ -303,6 +303,7 @@ async def get_classes(user_id: str = None, db: Session = Depends(get_db)):
         else:
             # No user_id provided, only first class unlocked
             unlocked = i == 0
+            progress_percent = 0.0
         
         class_data.append({
             "id": class_obj.id,

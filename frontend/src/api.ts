@@ -125,6 +125,7 @@ export interface ClassData {
 
 export interface OCRAnalysisResponse {
 	extracted_text: string
+	refined_text?: string | null  // LLM-refined text
 	errors: {
 		position: number
 		expected: string
@@ -144,7 +145,25 @@ export interface OCRAnalysisResponse {
 		suggestions: string[]
 		ocr_confidence?: number | null
 	}[]
-	meta?: Record<string, any>
+	llm_corrections?: {
+		original: string
+		corrected: string
+		reason: string
+	}[]
+	meta?: {
+		language?: string
+		expected_provided?: boolean
+		tokens_extracted?: number
+		issues_found?: number
+		ocr_confidence_avg?: number
+		ocr_engine?: string
+		llm_enabled?: boolean
+		llm_model?: string
+		llm_confidence?: number
+		llm_processing_time_ms?: number
+		pipeline_version?: string
+		[key: string]: any
+	}
 }
 
 export interface PersonalizedPracticeRequest {

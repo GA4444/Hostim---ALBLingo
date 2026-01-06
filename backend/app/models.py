@@ -155,7 +155,7 @@ class User(Base):
 	is_active = Column(Boolean, default=True)
 	is_admin = Column(Boolean, default=False, nullable=False)
 	password_hash = Column(String(255), nullable=False)
-	
+
 	# Gamification fields
 	current_streak = Column(Integer, default=0, nullable=False)
 	longest_streak = Column(Integer, default=0, nullable=False)

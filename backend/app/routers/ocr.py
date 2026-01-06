@@ -1,3 +1,20 @@
+"""
+Intelligent OCR Post-Processing Pipeline for Albanian Language
+
+Pipeline Architecture:
+1. Image Preprocessing (deskew, contrast, denoise, sharpen, threshold)
+2. Multi-Engine OCR Extraction (Tesseract sqi + PaddleOCR fallback)
+3. LLM-Based Post-Processing (GPT-4 for language refinement) [NEW]
+4. Rule-Based Orthography Analysis (Albanian-specific heuristics)
+
+The LLM post-processor:
+- Detects and corrects OCR artifacts (Il→Il, rn→m, etc.)
+- Restores missing Albanian diacritics (ë, ç)
+- Improves syntactic and semantic consistency
+- Provides confidence scoring
+
+This architecture is suitable for academic research and production use.
+"""
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends
 from sqlalchemy.orm import Session
 from ..database import get_db
@@ -8,6 +25,8 @@ from io import BytesIO
 import re
 import unicodedata
 import time
+import os
+import json
 
 try:
 	from PIL import Image
@@ -16,7 +35,141 @@ except ImportError:
 	Image = None
 	pytesseract = None
 
+# Optional PaddleOCR fallback (për shkrim dore). Kërkon instalim manual të paddleocr.
+try:
+	from paddleocr import PaddleOCR  # type: ignore
+	import numpy as np  # type: ignore
+	_PADDLE_OCR = PaddleOCR(
+		use_angle_cls=True,
+		lang="latin",  # PaddleOCR nuk ka model specifik "sqi"; latin punon mirë për alfabetin tonë
+		show_log=False,
+	)
+except Exception:
+	_PADDLE_OCR = None
+	np = None  # type: ignore
+
+# LLM Integration for post-OCR refinement
+try:
+	import openai
+	OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+	if OPENAI_API_KEY:
+		openai.api_key = OPENAI_API_KEY
+		LLM_AVAILABLE = True
+	else:
+		LLM_AVAILABLE = False
+except ImportError:
+	LLM_AVAILABLE = False
+
 router = APIRouter()
+
+
+# ============================================================================
+# LLM POST-PROCESSING MODULE
+# ============================================================================
+
+def _llm_refine_ocr_text(raw_text: str, use_llm: bool = True) -> Dict[str, Any]:
+	"""
+	Use GPT-4 as a post-OCR language refinement module.
+	
+	Tasks:
+	- Detect and correct OCR artifacts
+	- Restore missing Albanian diacritics (ë, ç)
+	- Improve syntactic and semantic consistency
+	- Provide confidence score
+	
+	Returns:
+		{
+			"refined_text": str,
+			"corrections": List[Dict],
+			"confidence": float,
+			"model_used": str,
+			"processing_time_ms": int
+		}
+	"""
+	if not use_llm or not LLM_AVAILABLE or not raw_text.strip():
+		return {
+			"refined_text": raw_text,
+			"corrections": [],
+			"confidence": 0.0,
+			"model_used": "none",
+			"processing_time_ms": 0
+		}
+	
+	start_time = time.time()
+	
+	system_prompt = """Ti je një ekspert i gjuhës shqipe dhe OCR post-processing.
+
+Detyra jote është të analizosh tekstin e nxjerrë nga OCR dhe:
+
+1. KORRIGJO gabimet tipike të OCR-së:
+   - "rn" → "m", "Il" → "Il", "l" → "i", "0" → "o", etj.
+   - Shkronja të dyfishta të panevojshme
+   - Karaktere të çuditshme ose simbole të gabuara
+
+2. RESTAURO diacritics shqipe që mungojnë:
+   - "e" → "ë" ku duhet (p.sh. "shtepi" → "shtëpi", "eshte" → "është")
+   - "c" → "ç" ku duhet (p.sh. "caj" → "çaj", "rrufe" → "rrufe")
+
+3. KORRIGJO gabime gramatikore dhe sintaksore të dukshme
+
+4. RUAJ kuptimin origjinal - mos ndryshoni fjalë që janë të sakta
+
+Përgjigju në formatin JSON:
+{
+  "refined_text": "Teksti i korrigjuar",
+  "corrections": [
+    {"original": "fjala origjinale", "corrected": "fjala e korrigjuar", "reason": "arsyeja"}
+  ],
+  "confidence": 0.85
+}
+
+Confidence duhet të jetë 0.0-1.0 bazuar në sa i sigurt je për korrigjimet."""
+
+	user_prompt = f"""Analizo dhe korrigjo këtë tekst të nxjerrë nga OCR:
+
+---
+{raw_text}
+---
+
+Kthe rezultatin në formatin JSON të specifikuar."""
+
+	try:
+		response = openai.ChatCompletion.create(
+			model="gpt-4-turbo-preview",
+			messages=[
+				{"role": "system", "content": system_prompt},
+				{"role": "user", "content": user_prompt}
+			],
+			temperature=0.3,  # Low temperature for more consistent corrections
+			max_tokens=1500
+		)
+		
+		content = response.choices[0].message.content.strip()
+		
+		# Extract JSON from response
+		json_match = re.search(r'\{[\s\S]*\}', content)
+		if json_match:
+			result = json.loads(json_match.group())
+			processing_time = int((time.time() - start_time) * 1000)
+			
+			return {
+				"refined_text": result.get("refined_text", raw_text),
+				"corrections": result.get("corrections", []),
+				"confidence": float(result.get("confidence", 0.5)),
+				"model_used": "gpt-4-turbo",
+				"processing_time_ms": processing_time
+			}
+	except Exception as e:
+		print(f"[OCR LLM] Error: {e}")
+	
+	# Fallback if LLM fails
+	return {
+		"refined_text": raw_text,
+		"corrections": [],
+		"confidence": 0.0,
+		"model_used": "fallback",
+		"processing_time_ms": int((time.time() - start_time) * 1000)
+	}
 
 # In-process cache for lexicon (keeps OCR fast). Safe for a single-process dev server.
 _LEXICON_CACHE: Optional[set] = None
@@ -27,9 +180,11 @@ _LEXICON_TTL_SECONDS: float = 300.0
 
 class OCRAnalysisOut(BaseModel):
 	extracted_text: str
+	refined_text: Optional[str] = None  # LLM-refined version
 	errors: List[Dict[str, Any]]
 	suggestions: List[str]
 	issues: List[Dict[str, Any]] = []
+	llm_corrections: List[Dict[str, Any]] = []  # Corrections made by LLM
 	meta: Dict[str, Any] = {}
 
 
@@ -43,17 +198,72 @@ def _tokenize_sq(text: str) -> List[str]:
 
 
 def _preprocess_for_ocr(img: "Image.Image") -> "Image.Image":
-	# Light preprocessing that helps Tesseract on scanned/phone images
+	"""
+	Upscale + denoise + sharpen + adaptive threshold për të rritur besueshmërinë e OCR.
+	"""
 	gray = img.convert("L")
 	try:
-		from PIL import ImageOps, ImageFilter
+		from PIL import ImageOps, ImageFilter, ImageEnhance
+
+		# 1) Upscale (1.5x) për të rritur lexueshmërinë e shkronjave
+		w, h = gray.size
+		scale = 1.5
+		gray = gray.resize((int(w * scale), int(h * scale)))
+
+		# 2) Rritje kontrasti + autocontrast
+		gray = ImageEnhance.Contrast(gray).enhance(2.0)
 		gray = ImageOps.autocontrast(gray)
+
+		# 3) Denoise i lehtë + Sharpen
 		gray = gray.filter(ImageFilter.MedianFilter(size=3))
+		gray = gray.filter(ImageFilter.UnsharpMask(radius=2, percent=150, threshold=3))
+
+		# 4) Adaptive-like threshold (pak më i ulët se më parë)
+		bw = gray.point(lambda x: 255 if x > 135 else 0, mode="1")
+		return bw.convert("L")
+	except Exception:
+		# Fallback minimal në rast mungese bibliotekash
+		bw = gray.point(lambda x: 255 if x > 140 else 0, mode="1")
+		return bw.convert("L")
+
+
+def _deskew_image(img: "Image.Image") -> "Image.Image":
+	"""
+	Përdor Tesseract OSD për të zbuluar këndin dhe e rrotullon imazhin nëse është e nevojshme.
+	"""
+	if not pytesseract or not hasattr(pytesseract, "image_to_osd"):
+		return img
+	try:
+		osd = pytesseract.image_to_osd(img)
+		angle_match = re.search(r"Rotate: (\d+)", osd)
+		if angle_match:
+			angle = int(angle_match.group(1)) % 360
+			# rrotullim minimal, 0/90/180/270
+			if angle in (90, 180, 270):
+				return img.rotate(-angle, expand=True, fillcolor=255)
 	except Exception:
 		pass
-	# Simple threshold
-	bw = gray.point(lambda x: 255 if x > 180 else 0, mode="1")
-	return bw.convert("L")
+	return img
+
+
+def _run_paddle_fallback(img: "Image.Image") -> str:
+	"""
+	Fallback OCR me PaddleOCR (opsionale, nëse është instaluar). E përshtatshme për shkrim dore.
+	"""
+	if not _PADDLE_OCR or np is None:
+		return ""
+	try:
+		np_img = np.array(img.convert("RGB"))
+		res = _PADDLE_OCR.ocr(np_img, cls=True)
+		lines = []
+		for line in res:
+			if line and len(line) > 0:
+				text = line[1][0]
+				if text:
+					lines.append(text)
+		return "\n".join(lines).strip()
+	except Exception:
+		return ""
 
 
 def _levenshtein(a: str, b: str, max_dist: int = 2) -> int:
@@ -251,9 +461,29 @@ def _extract_tokens_with_confidence(img: "Image.Image") -> Tuple[List[Dict[str, 
 async def analyze_dictation(
 	image: UploadFile = File(...),
 	expected_text: Optional[str] = Form(None),
+	use_llm: bool = Form(True),  # Enable LLM post-processing by default
 	db: Session = Depends(get_db)
 ):
-	"""Run OCR on an uploaded Albanian dictation image and analyze spelling (drejtshkrim)."""
+	"""
+	Intelligent OCR Pipeline for Albanian Language Documents.
+	
+	Pipeline stages:
+	1. Image preprocessing (deskew, contrast, denoise, threshold)
+	2. Multi-engine OCR (Tesseract sqi + PaddleOCR)
+	3. LLM post-processing (GPT-4 for language refinement) [optional]
+	4. Rule-based orthography analysis
+	
+	Parameters:
+	- image: Scanned image or photo of Albanian text
+	- expected_text: Optional reference text for comparison
+	- use_llm: Enable GPT-4 post-processing (default: True)
+	
+	Returns:
+	- extracted_text: Raw OCR output
+	- refined_text: LLM-corrected text (if use_llm=True)
+	- llm_corrections: List of corrections made by LLM
+	- issues: Orthography issues detected
+	"""
 
 	if not pytesseract or not Image:
 		raise HTTPException(
@@ -267,28 +497,71 @@ async def analyze_dictation(
 	except Exception as exc:
 		raise HTTPException(status_code=400, detail="Invalid image file") from exc
 
-	ocr_ready = _preprocess_for_ocr(ocr_image)
+	# Deskew + preprocess
+	deskewed = _deskew_image(ocr_image)
+	ocr_ready = _preprocess_for_ocr(deskewed)
 	token_objs, avg_conf = _extract_tokens_with_confidence(ocr_ready)
-	try:
-		extracted = pytesseract.image_to_string(
-			ocr_ready,
-			lang="sqi",
-			config="--oem 1 --psm 6 -c preserve_interword_spaces=1",
-		).strip()
-	except Exception:
+
+	# Multi-pass OCR: provo disa konfigurime për të rritur saktësinë në shkrim dore
+	ocr_candidates: List[Tuple[str, str]] = []  # (text, engine)
+
+	def _try_ocr(cfg: str, use_lang: bool = True) -> None:
 		try:
-			extracted = pytesseract.image_to_string(
+			txt = pytesseract.image_to_string(
 				ocr_ready,
-				config="--oem 1 --psm 6 -c preserve_interword_spaces=1",
+				lang="sqi" if use_lang else None,
+				config=cfg,
 			).strip()
-		except Exception as exc:
-			raise HTTPException(status_code=500, detail="OCR processing failed") from exc
+			if txt:
+				ocr_candidates.append((txt, "tesseract"))
+		except Exception:
+			pass
+
+	# Konfigurime të ndryshme psm/oem + whitelist për alfabetin shqip
+	common_cfg = "-c preserve_interword_spaces=1 -c tessedit_char_whitelist=\"A-Za-zËÇëç?.,' -\""
+	_try_ocr(f"--oem 1 --psm 6 {common_cfg}", True)
+	_try_ocr(f"--oem 1 --psm 4 {common_cfg}", True)
+	_try_ocr(f"--oem 1 --psm 7 {common_cfg}", True)  # single line
+	_try_ocr(f"--oem 1 --psm 11 {common_cfg}", True)  # sparse text
+	_try_ocr(f"--oem 1 --psm 13 {common_cfg}", True)  # raw line
+
+	# Fallback pa lang nëse sqi mungon
+	_try_ocr(f"--oem 1 --psm 6 {common_cfg}", False)
+	_try_ocr(f"--oem 1 --psm 4 {common_cfg}", False)
+
+	# PaddleOCR fallback (nëse është instaluar) për shkrim dore
+	paddle_text = _run_paddle_fallback(deskewed)
+	if paddle_text:
+		ocr_candidates.append((paddle_text, "paddleocr"))
+
+	def _score(text: str) -> int:
+		# Shkronja alfabetike + gjatësi: zgjedhim më të “lexueshmen”
+		alpha = sum(ch.isalpha() for ch in text)
+		return alpha + len(text)
+
+	if not ocr_candidates:
+		raise HTTPException(status_code=500, detail="OCR processing failed")
+
+	best_text, engine_used = max(ocr_candidates, key=lambda x: _score(x[0]))
+	extracted = best_text
+
+	# ========================================================================
+	# STAGE 3: LLM POST-PROCESSING (GPT-4 Language Refinement)
+	# ========================================================================
+	llm_result = _llm_refine_ocr_text(extracted, use_llm=use_llm)
+	refined_text = llm_result["refined_text"]
+	llm_corrections = llm_result["corrections"]
+	llm_confidence = llm_result["confidence"]
+	llm_model = llm_result["model_used"]
+	llm_time = llm_result["processing_time_ms"]
 
 	errors: List[Dict[str, Any]] = []
 	suggestions: List[str] = []
 	issues: List[Dict[str, Any]] = []
 
-	extracted_norm = _norm_text(extracted)
+	# Use refined text for analysis if LLM was used
+	text_for_analysis = refined_text if use_llm and llm_model != "none" else extracted
+	extracted_norm = _norm_text(text_for_analysis)
 	extracted_tokens = [t["token"] for t in token_objs] if token_objs else _tokenize_sq(extracted_norm)
 	expected_norm = _norm_text(expected_text) if expected_text else ""
 	expected_tokens = _tokenize_sq(expected_norm) if expected_text else []
@@ -384,15 +657,23 @@ async def analyze_dictation(
 			})
 
 	return OCRAnalysisOut(
-		extracted_text=extracted_norm,
+		extracted_text=_norm_text(extracted),  # Raw OCR output
+		refined_text=refined_text if use_llm and llm_model != "none" else None,
 		errors=errors,
 		suggestions=suggestions,
 		issues=issues,
+		llm_corrections=llm_corrections,
 		meta={
 			"language": "sqi",
 			"expected_provided": bool(expected_text),
 			"tokens_extracted": len(extracted_tokens),
 			"issues_found": len(issues),
 			"ocr_confidence_avg": avg_conf,
+			"ocr_engine": engine_used,
+			"llm_enabled": use_llm,
+			"llm_model": llm_model,
+			"llm_confidence": llm_confidence,
+			"llm_processing_time_ms": llm_time,
+			"pipeline_version": "2.0-llm",
 		},
 	)
