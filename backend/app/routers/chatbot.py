@@ -82,9 +82,9 @@ PLATFORM_KNOWLEDGE = {
     "grammar_tips": {
         "ë vs e": "Shkronja 'ë' është shkronjë e veçantë shqipe (shqiptohet si 'schwa'). P.sh.: 'shtëpi' jo 'shtepi', 'përshëndetje' jo 'pershendetje'.",
         "ç vs c": "Shkronja 'ç' është një tingull më i butë (si 'ch' në anglisht). P.sh.: 'çanta' jo 'canta', 'çelësi' jo 'celesi'.",
-        "dh": "Shkronja e dyfishtë 'dh' shqiptohet si 'th' në anglisht 'this'. P.sh.: 'dhe', 'dhëmbë'.",
-        "th": "Shkronja e dyfishtë 'th' shqiptohet si 'th' në anglisht 'think'. P.sh.: 'thënie', 'thjesht'.",
-        "Shkronjat e dyfishta": "Në shqip ka shkronja të dyfishta: ll, rr, nn, tt. P.sh.: 'dallim', 'territor', 'nënë', 'fëmijët'."
+        "dh": "Shkronja 'dh' shqiptohet si 'th' në anglisht 'this' (tingull i zëshëm). P.sh.: 'dhe', 'dhëmbë', 'dhjetë'.",
+        "th": "Shkronja 'th' shqiptohet si 'th' në anglisht 'think' (tingull i pashëm). P.sh.: 'thënie', 'thjesht', 'thirrje'.",
+        "Shkronjat e dyfishta": "Në shqip ka shkronja të dyfishta: ll dhe rr. P.sh.: 'dallim', 'territor', 'ballë', 'rrugë'."
     }
 }
 
@@ -170,7 +170,7 @@ def _get_contextual_response(query: str, user_id: Optional[str], db: Optional[Se
     if any(word in query_norm for word in ["filloj", "start", "regjistro", "regjistr", "begin"]):
         steps = PLATFORM_KNOWLEDGE['how_to_use']['getting_started']
         return {
-            "response": "**Si të fillosh:**\n\n" + "\n".join(f"{i+1}. {step}" for i, step in enumerate(steps)),
+            "response": "Si të fillosh:\n\n" + "\n".join(f"{i+1}. {step}" for i, step in enumerate(steps)),
             "suggestions": ["Si plotësoj ushtrime?", "Si hap klasën tjetër?"],
             "related_topics": ["Regjistrim", "Identifikim", "Klasa 1"]
         }
@@ -178,7 +178,7 @@ def _get_contextual_response(query: str, user_id: Optional[str], db: Optional[Se
     if any(word in query_norm for word in ["ushtrime", "exercise", "detyra", "plotesoj"]):
         steps = PLATFORM_KNOWLEDGE['how_to_use']['exercises']
         return {
-            "response": "**Si të plotësosh ushtrime:**\n\n" + "\n".join(f"{i+1}. {step}" for i, step in enumerate(steps)),
+            "response": "Si të plotësosh ushtrime:\n\n" + "\n".join(f"{i+1}. {step}" for i, step in enumerate(steps)),
             "suggestions": ["Çfarë nëse gaboj?", "Si përdor audio?"],
             "related_topics": ["Drejtshkrim", "Feedback", "Nivele"]
         }
@@ -187,7 +187,7 @@ def _get_contextual_response(query: str, user_id: Optional[str], db: Optional[Se
         tips = list(PLATFORM_KNOWLEDGE['grammar_tips'].items())
         tip = random.choice(tips)
         return {
-            "response": f"**Këshillë për drejtshkrim:**\n\n**{tip[0]}:** {tip[1]}",
+            "response": f"Këshillë për drejtshkrim:\n\n{tip[0]}: {tip[1]}",
             "suggestions": ["Më trego këshilla të tjera", "Si përmirësoj drejtshkrimin?"],
             "related_topics": ["Gramatikë Shqipe", "AI Coach", "Ushtrime"]
         }
@@ -195,7 +195,7 @@ def _get_contextual_response(query: str, user_id: Optional[str], db: Optional[Se
     if any(word in query_norm for word in ["gamifikimi", "badge", "streak", "pike", "competition"]):
         steps = PLATFORM_KNOWLEDGE['how_to_use']['gamification']
         return {
-            "response": "**Gamifikimi në AlbLingo:**\n\n" + "\n".join(f"🏆 {step}" for step in steps),
+            "response": "Gamifikimi në AlbLingo:\n\n" + "\n".join(f"🏆 {step}" for step in steps),
             "suggestions": ["Si fitoj badges?", "Çfarë është streak-u?", "Si shoh leaderboard?"],
             "related_topics": ["Achievements", "Streaks", "Leaderboard"]
         }
@@ -204,7 +204,7 @@ def _get_contextual_response(query: str, user_id: Optional[str], db: Optional[Se
     faq_match = _match_faq(query)
     if faq_match:
         return {
-            "response": f"**{faq_match['question']}**\n\n{faq_match['answer']}",
+            "response": f"{faq_match['question']}\n\n{faq_match['answer']}",
             "suggestions": ["Pyetje të tjera", "Si filloj?"],
             "related_topics": ["FAQ", "Udhëzime"]
         }
