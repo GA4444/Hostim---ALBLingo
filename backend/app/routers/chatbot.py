@@ -76,14 +76,14 @@ PLATFORM_KNOWLEDGE = {
         
         "Si shoh progresin tim?": "Shiko sidebar-in në të majtë për të parë klasat e tua, progresin, AI Insights dhe gamifikimin.",
         
-        "Çfarë nëse nuk kuptoj një ushtrim?": "Kliko ikonën 'hint' (nëse ka) ose pyet AI Chatbot-in për ndihmë. Gjithashtu mund të përdorësh audio për të dëgjuar fjalën."
+        "Çfarë nëse nuk kuptoj një ushtrim?": "Kliko ikonën e ndihmës (nëse ka) ose pyet AI Chatbot-in për ndihmë. Gjithashtu mund të përdorësh audio për të dëgjuar fjalën."
     },
     
     "grammar_tips": {
-        "ë vs e": "Shkronja 'ë' është shkronjë e veçantë shqipe (shqiptohet si 'schwa'). P.sh.: 'shtëpi' jo 'shtepi', 'përshëndetje' jo 'pershendetje'.",
-        "ç vs c": "Shkronja 'ç' është një tingull më i butë (si 'ch' në anglisht). P.sh.: 'çanta' jo 'canta', 'çelësi' jo 'celesi'.",
-        "dh": "Shkronja 'dh' shqiptohet si 'th' në anglisht 'this' (tingull i zëshëm). P.sh.: 'dhe', 'dhëmbë', 'dhjetë'.",
-        "th": "Shkronja 'th' shqiptohet si 'th' në anglisht 'think' (tingull i pashëm). P.sh.: 'thënie', 'thjesht', 'thirrje'.",
+        "ë vs e": "Shkronja 'ë' është shkronjë e veçantë shqipe (tingull i shkurtër i zëshëm). P.sh.: 'shtëpi' jo 'shtepi', 'përshëndetje' jo 'pershendetje'.",
+        "ç vs c": "Shkronja 'ç' është një tingull më i butë. P.sh.: 'çanta' jo 'canta', 'çelësi' jo 'celesi'.",
+        "dh": "Shkronja 'dh' është një tingull i zëshëm (bashkëtingëllore e zëshme). P.sh.: 'dhe', 'dhëmbë', 'dhjetë'.",
+        "th": "Shkronja 'th' është një tingull i pashëm (bashkëtingëllore e pashme). P.sh.: 'thënie', 'thjesht', 'thirrje'.",
         "Shkronjat e dyfishta": "Në shqip ka shkronja të dyfishta: ll dhe rr. P.sh.: 'dallim', 'territor', 'ballë', 'rrugë'."
     }
 }
@@ -164,7 +164,7 @@ def _get_contextual_response(query: str, user_id: Optional[str], db: Optional[Se
             "response": f"**{PLATFORM_KNOWLEDGE['platform_info']['name']}** është {PLATFORM_KNOWLEDGE['platform_info']['description']}\n\n"
                        f"Platforma ofron:\n" + "\n".join(f"✅ {feat}" for feat in PLATFORM_KNOWLEDGE['platform_info']['features'][:5]),
             "suggestions": ["Si filloj?", "Çfarë janë ushtrimet AI?", "Si marr pikë?"],
-            "related_topics": ["Udhëzuesi për fillestartë", "Features", "Gamifikimi"]
+            "related_topics": ["Udhëzuesi për fillestartë", "Veçoritë", "Gamifikimi"]
         }
     
     if any(word in query_norm for word in ["filloj", "start", "regjistro", "regjistr", "begin"]):
@@ -196,8 +196,8 @@ def _get_contextual_response(query: str, user_id: Optional[str], db: Optional[Se
         steps = PLATFORM_KNOWLEDGE['how_to_use']['gamification']
         return {
             "response": "Gamifikimi në AlbLingo:\n\n" + "\n".join(f"🏆 {step}" for step in steps),
-            "suggestions": ["Si fitoj badges?", "Çfarë është streak-u?", "Si shoh leaderboard?"],
-            "related_topics": ["Achievements", "Streaks", "Leaderboard"]
+            "suggestions": ["Si fitoj badges?", "Çfarë është streak-u?", "Si shoh tabelën e rezultateve?"],
+            "related_topics": ["Arritjet", "Seritë", "Tabela e rezultateve"]
         }
     
     # Try FAQ matching
@@ -224,7 +224,7 @@ def _get_contextual_response(query: str, user_id: Optional[str], db: Optional[Se
                                    f"🏆 Arritje të fituara: {user.total_achievements or 0}\n\n"
                                    f"Vazhdo kështu! 💪",
                         "suggestions": ["Si përmirësohem?", "Çfarë është AI Coach?"],
-                        "related_topics": ["Progresi", "Statistika", "Leaderboard"]
+                        "related_topics": ["Progresi", "Statistika", "Tabela e rezultateve"]
                     }
         except:
             pass
@@ -240,7 +240,7 @@ def _get_contextual_response(query: str, user_id: Optional[str], db: Optional[Se
                    "• OCR dhe audio\n"
                    "• AI Coach dhe ushtrime të personalizuara",
         "suggestions": ["Si filloj?", "Çfarë ofron platforma?", "Si marr më shumë pikë?"],
-        "related_topics": ["FAQ", "Udhëzuesi", "Features"]
+        "related_topics": ["Pyetje të shpeshta", "Udhëzuesi", "Veçoritë"]
     }
 
 
@@ -294,7 +294,7 @@ async def get_chat_topics():
             {
                 "title": "Për platformën",
                 "icon": "🏠",
-                "questions": ["Çfarë është AlbLingo?", "Cilat janë features kryesore?"]
+                "questions": ["Çfarë është AlbLingo?", "Cilat janë veçoritë kryesore?"]
             },
             {
                 "title": "Si të fillosh",
