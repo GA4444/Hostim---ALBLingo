@@ -4,8 +4,6 @@ import os
 import tempfile
 import subprocess
 from gtts import gTTS
-import speech_recognition as sr
-from pydub import AudioSegment
 import uuid
 import json
 import time
@@ -17,16 +15,26 @@ router = APIRouter()
 TEMP_AUDIO_DIR = "temp_audio"
 os.makedirs(TEMP_AUDIO_DIR, exist_ok=True)
 
+# Optional: Speech Recognition (requires SpeechRecognition + pydub + ffmpeg)
+try:
+    import speech_recognition as sr
+    from pydub import AudioSegment
+    SPEECH_RECOGNITION_AVAILABLE = True
+except ImportError:
+    sr = None
+    AudioSegment = None
+    SPEECH_RECOGNITION_AVAILABLE = False
+
 # Azure TTS (optional - falls back to gTTS if not configured)
 AZURE_SPEECH_KEY = os.getenv("AZURE_SPEECH_KEY")
 AZURE_SPEECH_REGION = os.getenv("AZURE_SPEECH_REGION", "westeurope")
 
 try:
-	import azure.cognitiveservices.speech as speechsdk
-	AZURE_AVAILABLE = bool(AZURE_SPEECH_KEY)
+    import azure.cognitiveservices.speech as speechsdk
+    AZURE_AVAILABLE = bool(AZURE_SPEECH_KEY)
 except ImportError:
-	AZURE_AVAILABLE = False
-	speechsdk = None
+    AZURE_AVAILABLE = False
+    speechsdk = None
 
 
 def _generate_speech_azure(
@@ -169,52 +177,59 @@ async def text_to_speech(
 
 @router.post("/speech-to-text")
 async def speech_to_text(audio_file: UploadFile = File(...), language: str = "sq-AL"):
-	"""
-	Convert speech to text using Google Speech Recognition
-	Language codes: 'sq-AL' for Albanian, 'en-US' for English
-	"""
-	try:
-		# Save uploaded file temporarily
-		temp_filename = f"stt_{uuid.uuid4()}.wav"
-		temp_filepath = os.path.join(TEMP_AUDIO_DIR, temp_filename)
-		
-		with open(temp_filepath, "wb") as buffer:
-			buffer.write(await audio_file.read())
-		
-		# Convert to proper format if needed
-		audio = AudioSegment.from_file(temp_filepath)
-		audio = audio.set_frame_rate(16000).set_channels(1)
-		audio.export(temp_filepath, format="wav")
-		
-		# Initialize recognizer
-		recognizer = sr.Recognizer()
-		
-		# Load audio file
-		with sr.AudioFile(temp_filepath) as source:
-			audio_data = recognizer.record(source)
-		
-		# Recognize speech
-		text = recognizer.recognize_google(audio_data, language=language)
-		
-		# Clean up temp files
-		os.remove(temp_filepath)
-		
-		return {
-			"text": text,
-			"confidence": 0.9,  # Google doesn't provide confidence for free tier
-			"language": language
-		}
-		
-	except sr.UnknownValueError:
-		raise HTTPException(status_code=400, detail="Could not understand audio")
-	except sr.RequestError as e:
-		raise HTTPException(status_code=500, detail=f"Speech recognition service error: {str(e)}")
-	except Exception as e:
-		raise HTTPException(status_code=500, detail=f"Speech-to-text failed: {str(e)}")
-	finally:
-		# Clean up temp files
-		if 'temp_filepath' in locals() and os.path.exists(temp_filepath):
-			os.remove(temp_filepath)
+    """
+    Convert speech to text using Google Speech Recognition
+    Language codes: 'sq-AL' for Albanian, 'en-US' for English
+    """
+    # Check if speech recognition is available
+    if not SPEECH_RECOGNITION_AVAILABLE:
+        raise HTTPException(
+            status_code=503,
+            detail="Speech recognition is not available. Required dependencies (SpeechRecognition, pydub) are not installed."
+        )
+    
+    try:
+        # Save uploaded file temporarily
+        temp_filename = f"stt_{uuid.uuid4()}.wav"
+        temp_filepath = os.path.join(TEMP_AUDIO_DIR, temp_filename)
+        
+        with open(temp_filepath, "wb") as buffer:
+            buffer.write(await audio_file.read())
+        
+        # Convert to proper format if needed
+        audio = AudioSegment.from_file(temp_filepath)
+        audio = audio.set_frame_rate(16000).set_channels(1)
+        audio.export(temp_filepath, format="wav")
+        
+        # Initialize recognizer
+        recognizer = sr.Recognizer()
+        
+        # Load audio file
+        with sr.AudioFile(temp_filepath) as source:
+            audio_data = recognizer.record(source)
+        
+        # Recognize speech
+        text = recognizer.recognize_google(audio_data, language=language)
+        
+        # Clean up temp files
+        os.remove(temp_filepath)
+        
+        return {
+            "text": text,
+            "confidence": 0.9,  # Google doesn't provide confidence for free tier
+            "language": language
+        }
+        
+    except sr.UnknownValueError:
+        raise HTTPException(status_code=400, detail="Could not understand audio")
+    except sr.RequestError as e:
+        raise HTTPException(status_code=500, detail=f"Speech recognition service error: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Speech-to-text failed: {str(e)}")
+    finally:
+        # Clean up temp files
+        if 'temp_filepath' in locals() and os.path.exists(temp_filepath):
+            os.remove(temp_filepath)
 
 
 @router.post("/pronunciation-check")
