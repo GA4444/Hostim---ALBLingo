@@ -207,7 +207,12 @@ export interface AICoachResponse {
 	drill_plan: string[]
 }
 
-const client = axios.create({ baseURL: '' })
+// API base URL from environment variable
+// In development: empty string (uses Vite proxy)
+// In production: set VITE_API_URL to your Render backend URL
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''
+
+const client = axios.create({ baseURL: API_BASE_URL })
 client.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) {
