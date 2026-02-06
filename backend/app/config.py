@@ -23,7 +23,24 @@ def _parse_origins(origins_str: str) -> List[str]:
             "http://localhost:3000",
             "http://127.0.0.1:3000",
         ]
-    return [origin.strip() for origin in origins_str.split(",") if origin.strip()]
+    origins = [origin.strip() for origin in origins_str.split(",") if origin.strip()]
+    # If "*" is in the list, allow all origins
+    if "*" in origins:
+        return ["*"]
+    return origins
+
+
+def _build_origin_regex() -> str:
+    """
+    Build a regex that matches all Vercel preview/production URLs for this project,
+    plus common localhost origins for development.
+    """
+    return (
+        r"^https://hostim-alb-lingo[a-z0-9\-]*\.vercel\.app$"
+        r"|^https://.*-ga4444s-projects\.vercel\.app$"
+        r"|^http://localhost:\d+$"
+        r"|^http://127\.0\.0\.1:\d+$"
+    )
 
 
 class Settings:
@@ -41,13 +58,16 @@ class Settings:
         # CORS - Parse from environment variable
         self.ALLOWED_ORIGINS: List[str] = _parse_origins(os.getenv("ALLOWED_ORIGINS", ""))
         
+        # CORS regex - matches all Vercel deployment URLs automatically
+        self.ALLOWED_ORIGIN_REGEX: str = _build_origin_regex()
+        
         # Environment
         self.ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
         self.DEBUG: bool = os.getenv("DEBUG", "true").lower() == "true"
         
         # Server
         self.HOST: str = os.getenv("HOST", "0.0.0.0")
-        self.PORT: int = int(os.getenv("PORT", "8000"))
+        self.PORT: int = int(os.getenv("PORT", "8001"))
         
         # AI Services (optional)
         self.OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")

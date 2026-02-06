@@ -45,16 +45,25 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # CORS Configuration - Uses environment variable ALLOWED_ORIGINS
-    # In production, set ALLOWED_ORIGINS to your Vercel frontend URL
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=settings.ALLOWED_ORIGINS,
+    # CORS Configuration
+    # Uses allow_origin_regex to automatically match all Vercel deployment URLs
+    # (each Vercel deploy gets a unique hash in the URL, so static lists break)
+    cors_kwargs = dict(
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
         allow_headers=["*"],
         expose_headers=["*"],
     )
+    if settings.ALLOWED_ORIGINS == ["*"]:
+        # Explicit wildcard: allow everything (credentials won't be sent)
+        cors_kwargs["allow_origins"] = ["*"]
+        cors_kwargs["allow_credentials"] = False
+    else:
+        # Use regex to match all Vercel preview/production URLs + any extra origins
+        cors_kwargs["allow_origins"] = settings.ALLOWED_ORIGINS
+        cors_kwargs["allow_origin_regex"] = settings.ALLOWED_ORIGIN_REGEX
+
+    app.add_middleware(CORSMiddleware, **cors_kwargs)
 
     # Register API Routers
     app.include_router(exercises.router, prefix="/api", tags=["exercises"])
