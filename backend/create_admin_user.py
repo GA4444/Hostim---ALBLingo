@@ -14,7 +14,7 @@ from app import models
 from passlib.context import CryptContext
 from datetime import datetime
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 def ensure_admin_column():
     """Ensure is_admin column exists"""
