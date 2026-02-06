@@ -318,7 +318,8 @@ export async function getProgressInsights(userId: string) {
 }
 
 export async function login(username: string, password: string) {
-	const { data } = await client.post('/api/login', { username, password })
+	console.log('[Fetch] Login request to:', API_BASE_URL + '/api/login')
+	const { data } = await client.post('/api/login', { username: username.trim(), password })
 	return data
 }
 

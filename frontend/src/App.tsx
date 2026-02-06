@@ -1135,9 +1135,17 @@ function App() {
                                 <button
                                     className="auth-submit"
                                     onClick={async () => {
+                                        const trimmedUsername = auth.username.trim()
+                                        const trimmedPassword = auth.password.trim()
+                                        if (!trimmedUsername || !trimmedPassword) {
+                                            setMessage('Plotëso emrin dhe fjalëkalimin! ⚠️')
+                                            return
+                                        }
                                         try {
                                             setMessage('Duke u lidhur... 🔄')
-                                            const res = await login(auth.username, auth.password)
+                                            console.log('[Login] Attempting login for:', trimmedUsername)
+                                            const res = await login(trimmedUsername, trimmedPassword)
+                                            console.log('[Login] Success:', res)
                                             setUserId(String(res.user_id))
                                             setIsAdmin(res.is_admin || false)
                                             setMessage('Mirësevini! 👋')
@@ -1146,7 +1154,14 @@ function App() {
                                             localStorage.setItem('user_id', String(res.user_id))
                                             localStorage.setItem('is_admin', String(res.is_admin || false))
                                         } catch (e: any) {
-                                            setMessage('Kredencialet e pasakta. Provo përsëri! ❌')
+                                            console.error('[Login] Error:', e?.response?.status, e?.response?.data, e?.message)
+                                            if (e?.response?.status === 401) {
+                                                setMessage('Kredencialet e pasakta. Provo përsëri! ❌')
+                                            } else if (e?.message?.includes('Network Error') || e?.message?.includes('CORS')) {
+                                                setMessage('Gabim rrjeti. Serveri mund të jetë duke u ngarkuar, provo përsëri pas disa sekondash! 🔄')
+                                            } else {
+                                                setMessage(`Gabim: ${e?.response?.data?.detail || e?.message || 'Provo përsëri!'} ❌`)
+                                            }
                                         }
                                     }}
                                 >
@@ -1208,19 +1223,33 @@ function App() {
                                 <button
                                     className="auth-submit"
                                     onClick={async () => {
+                                        const trimmedUsername = registrationData.username.trim()
+                                        const trimmedEmail = registrationData.email.trim()
+                                        const trimmedPassword = registrationData.password.trim()
+                                        
+                                        if (!trimmedUsername || !trimmedEmail || !trimmedPassword) {
+                                            setMessage('Plotëso të gjitha fushat e detyrueshme! ⚠️')
+                                            return
+                                        }
+                                        
                                         if (registrationData.password !== registrationData.confirmPassword) {
                                             setMessage('Fjalëkalimet nuk përputhen! ❌')
                                             return
                                         }
                                         
                                         try {
+                                            setMessage('Duke u regjistruar... 🔄')
+                                            console.log('[Register] Attempting registration for:', trimmedUsername)
                                             await register(
-                                                registrationData.username,
-                                                registrationData.email,
-                                                registrationData.password,
+                                                trimmedUsername,
+                                                trimmedEmail,
+                                                trimmedPassword,
                                                 registrationData.age ? parseInt(registrationData.age) : undefined
                                             )
+                                            console.log('[Register] Success')
                                             setMessage('Regjistrimi u krye me sukses! Tani mund të hyni. ✅')
+                                            // Auto-fill login form with the registered credentials
+                                            setAuth({ username: trimmedUsername, password: trimmedPassword })
                                             setShowAuth(false)
                                             setRegistrationData({
                                                 username: '',
@@ -1230,7 +1259,14 @@ function App() {
                                                 confirmPassword: ''
                                             })
                                         } catch (e: any) {
-                                            setMessage('Gabim në regjistrim. Provo përsëri! ❌')
+                                            console.error('[Register] Error:', e?.response?.status, e?.response?.data, e?.message)
+                                            if (e?.response?.data?.detail) {
+                                                setMessage(`Gabim: ${e.response.data.detail} ❌`)
+                                            } else if (e?.message?.includes('Network Error')) {
+                                                setMessage('Gabim rrjeti. Serveri mund të jetë duke u ngarkuar, provo përsëri! 🔄')
+                                            } else {
+                                                setMessage('Gabim në regjistrim. Provo përsëri! ❌')
+                                            }
                                         }
                                     }}
                                 >
