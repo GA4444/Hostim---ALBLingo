@@ -14,7 +14,7 @@ from .seed_albanian_corpus import (
     seed_eighth_class_exercises,
 )
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 router = APIRouter()
 

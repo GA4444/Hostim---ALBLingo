@@ -62,6 +62,21 @@ except ImportError:
 
 router = APIRouter()
 
+def _ensure_tesseract_available() -> None:
+	"""Ensure Tesseract binary is available for pytesseract."""
+	if not pytesseract or not Image:
+		raise HTTPException(
+			status_code=501,
+			detail="OCR libraries not installed. Install pillow and pytesseract with system-level tesseract."
+		)
+	try:
+		pytesseract.get_tesseract_version()
+	except Exception as exc:
+		raise HTTPException(
+			status_code=501,
+			detail="Tesseract OCR not available. Install 'tesseract-ocr' and 'tesseract-ocr-sqi' on the server."
+		) from exc
+
 
 # ============================================================================
 # LLM POST-PROCESSING MODULE
@@ -485,11 +500,7 @@ async def analyze_dictation(
 	- issues: Orthography issues detected
 	"""
 
-	if not pytesseract or not Image:
-		raise HTTPException(
-			status_code=501,
-			detail="OCR libraries not installed. Install pillow and pytesseract with system-level tesseract."
-		)
+	_ensure_tesseract_available()
 
 	content = await image.read()
 	try:

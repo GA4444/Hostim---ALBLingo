@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from ..database import get_db
 from .. import models, schemas
 from passlib.context import CryptContext
@@ -160,6 +161,14 @@ def create_class(user_id: int, class_data: schemas.ClassCreate, db: Session = De
 	"""Create new class (admin only)"""
 	verify_admin(user_id, db)
 	
+	# Prevent duplicate top-level class names (case-insensitive)
+	existing = db.query(models.Course).filter(
+		models.Course.parent_class_id == None,
+		func.lower(models.Course.name) == class_data.name.strip().lower()
+	).first()
+	if existing:
+		raise HTTPException(status_code=400, detail="Class with this name already exists")
+	
 	# Create class (which is a Course with parent_class_id = None)
 	db_class = models.Course(
 		name=class_data.name,
@@ -175,6 +184,62 @@ def create_class(user_id: int, class_data: schemas.ClassCreate, db: Session = De
 	db.refresh(db_class)
 	
 	return db_class
+
+
+@router.post("/cleanup-duplicate-classes")
+def cleanup_duplicate_classes(user_id: int, dry_run: bool = True, db: Session = Depends(get_db)):
+	"""
+	Remove duplicate top-level classes by name (case-insensitive).
+	Keeps the smallest id per name. Deletes child courses/levels/exercises
+	for duplicates. Use dry_run=true to preview.
+	"""
+	verify_admin(user_id, db)
+
+	# Find duplicate class names
+	duplicates = db.query(
+		func.lower(models.Course.name).label("name_key"),
+		func.count(models.Course.id).label("cnt")
+	).filter(
+		models.Course.parent_class_id == None
+	).group_by(
+		func.lower(models.Course.name)
+	).having(
+		func.count(models.Course.id) > 1
+	).all()
+
+	if not duplicates:
+		return {"duplicates": 0, "deleted": 0, "kept": []}
+
+	result = {"duplicates": len(duplicates), "deleted": 0, "kept": [], "removed": []}
+
+	for dup in duplicates:
+		classes = db.query(models.Course).filter(
+			models.Course.parent_class_id == None,
+			func.lower(models.Course.name) == dup.name_key
+		).order_by(models.Course.id.asc()).all()
+		if not classes:
+			continue
+		kept = classes[0]
+		result["kept"].append({"id": kept.id, "name": kept.name})
+		to_remove = classes[1:]
+		for cls in to_remove:
+			result["removed"].append({"id": cls.id, "name": cls.name})
+			if dry_run:
+				continue
+			child_course_ids = [
+				c.id for c in db.query(models.Course).filter(models.Course.parent_class_id == cls.id).all()
+			]
+			if child_course_ids:
+				db.query(models.Exercise).filter(models.Exercise.course_id.in_(child_course_ids)).delete(synchronize_session=False)
+				db.query(models.Level).filter(models.Level.course_id.in_(child_course_ids)).delete(synchronize_session=False)
+				db.query(models.Course).filter(models.Course.id.in_(child_course_ids)).delete(synchronize_session=False)
+			db.query(models.Course).filter(models.Course.id == cls.id).delete(synchronize_session=False)
+			result["deleted"] += 1
+
+	if not dry_run:
+		db.commit()
+
+	return result
 
 
 @router.put("/classes/{class_id}", response_model=schemas.CourseOut)
