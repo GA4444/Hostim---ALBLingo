@@ -1,3 +1,14 @@
+/* ==================== BACKEND WARMUP ANIMATION ==================== */
+
+@keyframes slide {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(400%);
+    }
+}
+
 /* ==================== SKELETON LOADING ANIMATIONS ==================== */
 
 @keyframes skeleton-loading {

@@ -84,8 +84,39 @@ function App() {
         }
     }, [message])
 
-    // Fetch public stats for welcome screen
+    // Backend warm-up state (for Render free tier)
+    const [backendReady, setBackendReady] = useState(false)
+    const [warmingUp, setWarmingUp] = useState(false)
+
+    // Warm up backend on mount (Render free tier goes to sleep)
     useEffect(() => {
+        const warmUpBackend = async () => {
+            setWarmingUp(true)
+            try {
+                console.log('[Warmup] Checking if backend is awake...')
+                const response = await fetch(import.meta.env.VITE_API_URL + '/health', {
+                    method: 'GET',
+                    signal: AbortSignal.timeout(60000), // 60 second timeout
+                })
+                if (response.ok) {
+                    console.log('[Warmup] Backend is ready!')
+                    setBackendReady(true)
+                }
+            } catch (error) {
+                console.log('[Warmup] Backend sleeping, waiting for wake up...')
+                // Retry after 3 seconds
+                setTimeout(warmUpBackend, 3000)
+            } finally {
+                setWarmingUp(false)
+            }
+        }
+        warmUpBackend()
+    }, [])
+
+    // Fetch public stats for welcome screen (only after backend is ready)
+    useEffect(() => {
+        if (!backendReady) return
+        
         const fetchPublicStats = async () => {
             try {
                 const stats = await getPublicStats()
@@ -95,7 +126,7 @@ function App() {
             }
         }
         fetchPublicStats()
-    }, [])
+    }, [backendReady])
 
     // Advanced gamification state
     const [userStats, setUserStats] = useState({
@@ -1083,6 +1114,41 @@ function App() {
 
     const showPronunciationHint = () => {
         setMessage('💡 Këshillë: Dëgjoni me kujdes zërin dhe përpiquni ta imitoni atë! 🎵')
+    }
+
+    // Show loading screen while backend is warming up
+    if (warmingUp && !backendReady) {
+        return (
+            <div className="app" style={{ 
+                minHeight: '100vh', 
+                width: '100%', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                backgroundColor: '#f0f0f0'
+            }}>
+                <div style={{ textAlign: 'center', padding: '2rem' }}>
+                    <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🦉</div>
+                    <h2 style={{ color: '#58cc02', marginBottom: '1rem' }}>Duke u lidhur me serverin...</h2>
+                    <p style={{ color: '#777' }}>Serveri po zgjohet, ju lutem prisni disa sekonda ⏳</p>
+                    <div style={{ 
+                        width: '200px', 
+                        height: '4px', 
+                        backgroundColor: '#e5e5e5', 
+                        borderRadius: '2px',
+                        margin: '2rem auto',
+                        overflow: 'hidden'
+                    }}>
+                        <div style={{
+                            width: '50%',
+                            height: '100%',
+                            backgroundColor: '#58cc02',
+                            animation: 'slide 1.5s infinite'
+                        }}></div>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     // If not logged in, show authentication
