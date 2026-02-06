@@ -212,7 +212,36 @@ export interface AICoachResponse {
 // In production: set VITE_API_URL to your Render backend URL
 const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 
-const client = axios.create({ baseURL: API_BASE_URL })
+const client = axios.create({ 
+  baseURL: API_BASE_URL,
+  timeout: 60000, // 60 seconds timeout for Render free tier wake-up
+})
+
+// Retry interceptor for network errors (Render free tier sleep)
+client.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config
+    
+    // Retry on network errors (Render free tier sleep)
+    if (
+      error.code === 'ERR_NETWORK' || 
+      error.message?.includes('Network Error') ||
+      error.message?.includes('ERR_INTERNET_DISCONNECTED')
+    ) {
+      // Only retry once, and only for GET/POST requests
+      if (!originalRequest._retry && (originalRequest.method === 'get' || originalRequest.method === 'post')) {
+        originalRequest._retry = true
+        console.log('[API] Network error detected, retrying after 3 seconds...')
+        await new Promise(resolve => setTimeout(resolve, 3000)) // Wait 3 seconds for Render to wake up
+        return client(originalRequest)
+      }
+    }
+    
+    return Promise.reject(error)
+  }
+)
+
 client.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) {

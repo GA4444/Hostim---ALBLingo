@@ -1154,11 +1154,35 @@ function App() {
                                             localStorage.setItem('user_id', String(res.user_id))
                                             localStorage.setItem('is_admin', String(res.is_admin || false))
                                         } catch (e: any) {
-                                            console.error('[Login] Error:', e?.response?.status, e?.response?.data, e?.message)
+                                            console.error('[Login] Error:', e?.response?.status, e?.response?.data, e?.message, e?.code)
                                             if (e?.response?.status === 401) {
                                                 setMessage('Kredencialet e pasakta. Provo përsëri! ❌')
-                                            } else if (e?.message?.includes('Network Error') || e?.message?.includes('CORS')) {
-                                                setMessage('Gabim rrjeti. Serveri mund të jetë duke u ngarkuar, provo përsëri pas disa sekondash! 🔄')
+                                            } else if (
+                                                e?.code === 'ERR_NETWORK' || 
+                                                e?.message?.includes('Network Error') || 
+                                                e?.message?.includes('ERR_INTERNET_DISCONNECTED') ||
+                                                e?.message?.includes('timeout')
+                                            ) {
+                                                setMessage('Serveri po zgjohet... Provo përsëri pas 3-5 sekondash! ⏳')
+                                                // Auto-retry after 5 seconds
+                                                setTimeout(async () => {
+                                                    try {
+                                                        setMessage('Duke u lidhur përsëri... 🔄')
+                                                        const res = await login(trimmedUsername, trimmedPassword)
+                                                        setUserId(String(res.user_id))
+                                                        setIsAdmin(res.is_admin || false)
+                                                        setMessage('Mirësevini! 👋')
+                                                        localStorage.setItem('username', res.username)
+                                                        localStorage.setItem('user_id', String(res.user_id))
+                                                        localStorage.setItem('is_admin', String(res.is_admin || false))
+                                                    } catch (retryError: any) {
+                                                        if (retryError?.response?.status === 401) {
+                                                            setMessage('Kredencialet e pasakta. Provo përsëri! ❌')
+                                                        } else {
+                                                            setMessage('Serveri ende po zgjohet. Provo përsëri pas disa sekondash! ⏳')
+                                                        }
+                                                    }
+                                                }, 5000)
                                             } else {
                                                 setMessage(`Gabim: ${e?.response?.data?.detail || e?.message || 'Provo përsëri!'} ❌`)
                                             }
