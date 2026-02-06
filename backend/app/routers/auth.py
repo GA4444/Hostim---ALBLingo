@@ -6,9 +6,8 @@ from passlib.context import CryptContext
 from datetime import datetime
 
 router = APIRouter()
-# Use a modern, battle-tested password hashing scheme that doesn't have
-# bcrypt's 72-byte limitation or platform-specific backend issues.
-pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+# Use bcrypt for password hashing (compatible with existing hashes in database)
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 @router.post("/register", response_model=schemas.AuthResponse)

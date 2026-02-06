@@ -7,7 +7,7 @@ from datetime import datetime
 from typing import List, Optional
 
 router = APIRouter()
-pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def verify_admin(user_id: int, db: Session):
